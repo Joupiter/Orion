@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(path: ':api', configuration: 'shadow')
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+    implementation 'io.lettuce:lettuce-core:6.3.0.RELEASE'
+    compileOnly files('../libs/spigot.jar')
+}
+
+shadowJar {
+    dependencies {
+        include(dependency(':api'))
+        include(dependency('io.lettuce:lettuce-core:6.3.0.RELEASE'))
+    }
+}

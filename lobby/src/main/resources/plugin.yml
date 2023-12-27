@@ -1,0 +1,6 @@
+name: OrionLobby
+main: fr.orion.lobby.LobbyPlugin
+version: 1.0.0
+author: Joupi
+description: Lobby plugin
+depends: [OrionCore]

@@ -1,0 +1,5 @@
+rootProject.name = 'Orion'
+include 'api'
+include 'core'
+include 'lobby'
+

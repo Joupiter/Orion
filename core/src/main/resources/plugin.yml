@@ -1,0 +1,5 @@
+name: OrionCore
+main: fr.orion.core.CorePlugin
+version: 1.0.0
+author: Joupi
+description: Core plugin
