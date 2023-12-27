@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="160" height="160" src="img/rounded.png">
+</p>
+
 # Libraries
 
 libraries used:
