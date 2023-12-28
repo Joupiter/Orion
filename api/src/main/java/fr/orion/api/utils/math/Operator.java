@@ -1,4 +1,4 @@
-package fr.orion.api.math;
+package fr.orion.api.utils.math;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

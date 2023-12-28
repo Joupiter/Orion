@@ -1,3 +1,4 @@
 dependencies {
+    compileOnly files('../libs/spigot.jar')
     implementation 'io.lettuce:lettuce-core:6.3.0.RELEASE'
 }
