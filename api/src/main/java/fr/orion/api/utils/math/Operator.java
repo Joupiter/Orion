@@ -8,11 +8,11 @@ import java.util.function.DoubleBinaryOperator;
 @AllArgsConstructor
 public enum Operator {
 
-    ADD('+', Double::sum),
-    SUBTRACT('-', (a, b) -> a - b),
-    MULTIPLY('*', (a, b) -> a * b),
-    DIVIDE('/', (a, b) -> a / b),
-    MODULO('%', (a, b) -> a % b);
+    ADD ('+', Double::sum),
+    SUBTRACT ('-', (a, b) -> a - b),
+    MULTIPLY ('*', (a, b) -> a * b),
+    DIVIDE ('/', (a, b) -> a / b),
+    MODULO ('%', (a, b) -> a % b);
 
     private final char character;
     private final DoubleBinaryOperator operation;
