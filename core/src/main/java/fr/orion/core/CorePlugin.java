@@ -6,8 +6,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CorePlugin extends JavaPlugin {
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         OrionApi.setProvider(new OrionImpl());
+    }
+
+    @Override
+    public void onEnable() {
+        getApi().getDatabaseLoader().connect();
     }
 
     public OrionApi getApi() {
@@ -16,7 +21,7 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        getApi().getDatabaseLoader().disconnect();
     }
 
 }

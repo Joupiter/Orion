@@ -11,7 +11,7 @@ import lombok.Getter;
 import java.io.Closeable;
 
 @Getter
-public abstract class RedisDatabase implements Database, Closeable {
+public abstract class RedisDatabase implements Database {
 
     private final RedisClient client;
 
@@ -32,8 +32,9 @@ public abstract class RedisDatabase implements Database, Closeable {
     }
 
     @Override
-    public void close() {
-        getConnection().closeAsync().whenComplete((unused, throwable) -> getConnection().close());
+    public void disconnect() {
+        getConnection().close();
+        getClient().close();
     }
 
 }

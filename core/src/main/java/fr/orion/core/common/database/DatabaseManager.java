@@ -18,8 +18,13 @@ public class DatabaseManager implements DatabaseLoader {
     }
 
     @Override
+    public void connect() {
+        getRedisDatabase().connect();
+    }
+
+    @Override
     public void disconnect() {
-        getRedisDatabase().close();
+        getRedisDatabase().disconnect();
     }
 
 }

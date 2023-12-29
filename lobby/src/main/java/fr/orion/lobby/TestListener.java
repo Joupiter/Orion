@@ -36,6 +36,11 @@ public class TestListener implements Listener {
             event.setCancelled(true);
         }
 
+        if (event.getMessage().equalsIgnoreCase("!redistest")) {
+            getPlugin().getApi().getDatabaseLoader().getRedisDatabase().getReactiveCommands().set("test", "work").subscribe();
+            event.setCancelled(true);
+        }
+
     }
 
     private void addCoins(User user) {
