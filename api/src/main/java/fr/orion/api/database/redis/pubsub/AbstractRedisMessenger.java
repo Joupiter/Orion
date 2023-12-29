@@ -35,6 +35,7 @@ public abstract class AbstractRedisMessenger {
 
     public void disconnect() {
         getReactivePubSub().unsubscribe(getChannelNames());
+        getChannels().clear();
     }
 
     private void onReceive(ChannelMessage<String, String> channelMessage) {

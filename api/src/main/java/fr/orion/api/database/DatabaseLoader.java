@@ -6,9 +6,9 @@ import fr.orion.api.database.redis.pubsub.AbstractRedisMessenger;
 
 public interface DatabaseLoader {
 
-    default MongoDatabase getMongoDatabase() {
-        return null;
-    };
+    default MongoDatabase getMongoDatabase() throws ClassNotFoundException {
+        throw new ClassNotFoundException("Not yet implemented");
+    }
 
     RedisDatabase getRedisDatabase();
 
