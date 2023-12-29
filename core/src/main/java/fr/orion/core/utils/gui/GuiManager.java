@@ -2,6 +2,7 @@ package fr.orion.core.utils.gui;
 
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,13 +29,21 @@ public class GuiManager implements Listener {
         //MultiThreading.runnablePool.scheduleAtFixedRate(this::updateButtons, 1, 1, TimeUnit.SECONDS);
     }
 
+    public Optional<Gui<?>> getGui(UUID uuid) {
+        return Optional.ofNullable(getGuis().get(uuid));
+    }
+
+    public Optional<Gui<?>> getGui(HumanEntity player) {
+        return getGui(player.getUniqueId());
+    }
+
     private void updateButtons() {
         getGuis().values().forEach(Gui::onUpdate);
     }
 
     public void open(Player player, Gui<?> gui) {
         getGuis().put(player.getUniqueId(), gui);
-        Optional.ofNullable(getGuis().get(player.getUniqueId())).ifPresent(menu -> menu.onOpen(player));
+        getGui(player).ifPresent(menu -> menu.onOpen(player));
     }
 
     @EventHandler
@@ -43,7 +52,7 @@ public class GuiManager implements Listener {
 
         if (itemStack == null) return;
 
-        Optional.ofNullable(getGuis().get(event.getWhoClicked().getUniqueId()))
+        getGui(event.getWhoClicked())
                 .filter(gui -> event.getInventory().equals(gui.getInventory()))
                 .ifPresent(gui -> {
                     if (itemStack.getType() == Material.SKULL_ITEM)
@@ -61,14 +70,14 @@ public class GuiManager implements Listener {
 
     @EventHandler
     public void onDrag(InventoryDragEvent event) {
-        Optional.ofNullable(getGuis().get(event.getWhoClicked().getUniqueId()))
+        getGui(event.getWhoClicked())
                 .filter(gui -> event.getInventory().equals(gui.getInventory()))
                 .ifPresent(gui -> event.setCancelled(true));
     }
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        Optional.ofNullable(getGuis().get(event.getPlayer().getUniqueId()))
+        getGui(event.getPlayer())
                 .filter(gui -> event.getInventory().equals(gui.getInventory()))
                 .filter(gui -> gui.getCloseConsumer() != null)
                 .ifPresent(gui -> gui.getCloseConsumer().accept(event));

@@ -11,8 +11,7 @@ public abstract class PageableGui<P extends JavaPlugin, E> extends Gui<P> {
     private final int maxItems;
 
     private final Pagination<E> pagination;
-    @Setter
-    private Pagination<E>.Page page;
+    @Setter private Pagination<E>.Page page;
 
     protected PageableGui(P plugin, String inventoryName, int rows, int maxItems) {
         super(plugin, inventoryName, rows);

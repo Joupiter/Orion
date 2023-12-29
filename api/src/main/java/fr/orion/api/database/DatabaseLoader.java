@@ -2,7 +2,7 @@ package fr.orion.api.database;
 
 import fr.orion.api.database.mongo.MongoDatabase;
 import fr.orion.api.database.redis.RedisDatabase;
-import org.apache.commons.lang.NotImplementedException;
+import fr.orion.api.database.redis.pubsub.AbstractRedisMessenger;
 
 public interface DatabaseLoader {
 
@@ -11,6 +11,8 @@ public interface DatabaseLoader {
     };
 
     RedisDatabase getRedisDatabase();
+
+    AbstractRedisMessenger getRedisMessenger();
 
     void connect();
 

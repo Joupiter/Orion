@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class Division {
 
-    private final String divisionName;
+    private final String name;
 
     private final Set<DivisionTier> tiers;
 

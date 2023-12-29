@@ -1,6 +1,10 @@
 package fr.orion.lobby;
 
 import fr.orion.api.user.User;
+import fr.orion.core.common.database.redis.channel.ExampleChannel;
+import fr.orion.core.common.database.redis.channel.FineChannel;
+import fr.orion.core.common.database.redis.packet.ExamplePacket;
+import fr.orion.core.common.database.redis.packet.FinePacket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -36,6 +40,26 @@ public class TestListener implements Listener {
             event.setCancelled(true);
         }
 
+        if (event.getMessage().equalsIgnoreCase("!sub")) {
+            getPlugin().getApi().getDatabaseLoader().getRedisMessenger().addChannel(new ExampleChannel());
+            event.setCancelled(true);
+        }
+
+        if (event.getMessage().equalsIgnoreCase("!sub2")) {
+            getPlugin().getApi().getDatabaseLoader().getRedisMessenger().addChannel(new FineChannel());
+            event.setCancelled(true);
+        }
+
+        if (event.getMessage().equalsIgnoreCase("!pub")) {
+            getPlugin().getApi().getDatabaseLoader().getRedisMessenger().publish("example", new ExamplePacket("Fine"));
+            event.setCancelled(true);
+        }
+
+        if (event.getMessage().equalsIgnoreCase("!pub2")) {
+            getPlugin().getApi().getUserRepository().getUser(player.getUniqueId()).subscribe(this::sendFinePacket);
+            event.setCancelled(true);
+        }
+
         if (event.getMessage().equalsIgnoreCase("!redistest")) {
             getPlugin().getApi().getDatabaseLoader().getRedisDatabase().getReactiveCommands().set("test", "work").subscribe();
             event.setCancelled(true);
@@ -45,6 +69,10 @@ public class TestListener implements Listener {
 
     private void addCoins(User user) {
         user.setCoins(user.getCoins() + 1);
+    }
+
+    private void sendFinePacket(User user) {
+        getPlugin().getApi().getDatabaseLoader().getRedisMessenger().publish("fine", new FinePacket(user));
     }
 
     private void agfgdgdfgf(User user) {

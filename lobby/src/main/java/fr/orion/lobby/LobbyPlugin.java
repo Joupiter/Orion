@@ -15,7 +15,6 @@ public class LobbyPlugin extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
-        super.onDisable();
-    }
+    public void onDisable() { }
+
 }

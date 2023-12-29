@@ -9,11 +9,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Consumer;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class GuiButton {
 
     private final ItemStack itemStack;
-    @Setter private Consumer<InventoryClickEvent> clickEvent;
+    private Consumer<InventoryClickEvent> clickEvent;
 
     public GuiButton(ItemStack itemStack) {
         this(itemStack, event -> event.setCancelled(true));

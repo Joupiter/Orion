@@ -19,6 +19,35 @@ public class Utils {
         if (optional.isEmpty()) runnable.run();
     }
 
+    public void ifTrue(boolean condition, Runnable runnable) {
+        if (condition) runnable.run();
+    }
+
+    public void ifFalse(boolean condition, Runnable runnable) {
+        if (!condition) runnable.run();
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public class BooleanWrapper {
+
+        private final boolean condition;
+
+        public static BooleanWrapper of(boolean condition) {
+            return new BooleanWrapper(condition);
+        }
+
+        public BooleanWrapper ifTrue(Runnable runnable) {
+            if (condition) runnable.run();
+            return this;
+        }
+
+        public void ifFalse(Runnable runnable) {
+            if (!condition) runnable.run();
+        }
+
+    }
+
     @Getter
     @AllArgsConstructor
     public class Value<T> {
