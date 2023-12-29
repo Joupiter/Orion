@@ -1,10 +1,14 @@
+***
+
+<h1 align="center">˗ˏˋ Projet Orion ˎˊ˗</h1>
+
 <p align="center">
   <img width="160" height="160" src="img/rounded.png">
 </p>
 
-# Libraries
+***
 
-libraries used:
+# Libraries:
 
 [Reactor](https://github.com/reactor/reactor-core):  A reactive programming foundation for building non-blocking applications.
 

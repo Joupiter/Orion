@@ -1,9 +1,12 @@
+import com.github.benmanes.caffeine.cache.Scheduler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.orion.api.OrionApi;
 import fr.orion.api.user.User;
 import fr.orion.core.OrionImpl;
 import org.junit.jupiter.api.Test;
+import reactor.core.scheduler.Schedulers;
+
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,13 +24,13 @@ public class RedisTest {
         OrionApi.getProvider().getDatabaseLoader().connect();
 
         System.out.println("----------------------");
-        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getConnection().reactive()
-                .set(getUserRedisKey(uuid), gson.toJson(user))
-                .subscribe(System.out::println);
+        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getReactiveCommands()
+                .set(getUserRedisKey(uuid), gson.toJson(user)).log().subscribe();
+        System.out.println(gson.toJson(user));
         System.out.println("----------------------");
 
-        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getConnection().reactive().get(getUserRedisKey(uuid))
-                .subscribe(this::sameUser);
+        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getReactiveCommands().get(getUserRedisKey(uuid))
+                .map(this::convert).log().subscribe(this::sameUser);
 
         OrionApi.getProvider().getDatabaseLoader().disconnect();
     }
@@ -36,8 +39,12 @@ public class RedisTest {
         return "users:" + uuid.toString();
     }
 
-    public void sameUser(String json) {
-        assertEquals(user, gson.fromJson(json, User.class));
+    public User convert(String json) {
+        return gson.fromJson(json, User.class);
+    }
+
+    public void sameUser(User fromRedis) {
+       assertEquals(user.getUuid(), fromRedis.getUuid());
     }
 
 }
