@@ -11,9 +11,10 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+@Getter
 public class UserManager implements UserRepository {
 
-    @Getter private final OrionApi api;
+    private final OrionApi api;
 
     private final ConcurrentMap<UUID, User> users;
 

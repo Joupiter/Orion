@@ -44,10 +44,6 @@ public abstract class Gui<P extends JavaPlugin> {
 
     public void onUpdate() {}
 
-    public void setCloseInventory(Consumer<InventoryCloseEvent> closeConsumer) {
-        this.closeConsumer = closeConsumer;
-    }
-
     public void onOpen(Player player) {
         setup();
         open(player);
@@ -92,8 +88,9 @@ public abstract class Gui<P extends JavaPlugin> {
     }
 
     public void setVerticalLine(int from, int to, GuiButton button) {
-        for (int slot = from; slot <= to; slot += 9)
-            setItem(slot, button);
+        IntStream.iterate(from, slot -> slot + 9)
+                .limit((to - from) / 9 + 1)
+                .forEach(slot -> setItem(slot, button));
     }
 
     public void setVerticalLine(int from, int to, ItemStack item) {
@@ -113,8 +110,7 @@ public abstract class Gui<P extends JavaPlugin> {
 
     public int[] getBorders() {
         return IntStream.range(0, getSize())
-                .filter(i -> getSize() < 27 || i < 9 || i % 9 == 0 || (i - 8) % 9 == 0 || i > getSize() - 9)
-                .parallel()
+                .filter(i -> getSize() < 27 || i < 9 || i % 9 == 0 || (i - 8) % 9 == 0 || i > getSize() - 9).parallel()
                 .toArray();
     }
 
@@ -150,7 +146,7 @@ public abstract class Gui<P extends JavaPlugin> {
     }
 
     public int getSize() {
-        return rows * 9;
+        return getRows() * 9;
     }
 
 }

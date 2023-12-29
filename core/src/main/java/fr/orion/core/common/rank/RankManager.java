@@ -10,9 +10,10 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class RankManager implements RankRepository {
 
-    @Getter private final OrionApi api;
+    private final OrionApi api;
 
     private final List<Rank> ranks;
 
