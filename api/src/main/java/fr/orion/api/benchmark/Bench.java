@@ -7,4 +7,8 @@ public interface Bench {
 
     void test();
 
+    default void notify(String message) {
+        System.out.println("[Benchmark] (" + getName() + ") : " + message);
+    }
+
 }

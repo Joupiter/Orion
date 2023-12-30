@@ -9,7 +9,11 @@ import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -26,8 +30,13 @@ public class BenchmarkingCommand implements CommandExecutor {
             return true;
         }
 
-        getBenchHandler().getCategory(args[0]).ifPresentOrElse(category -> category.getBenchmark(args[1])
-                .ifPresentOrElse(category::run, () -> showAvailableBench(sender, category)), () -> showAvailableCategory(sender));
+        getBenchHandler().getCategory(args[0])
+                .map(Optional::orElseThrow)
+                .subscribe(category -> category.getBenchmark(args[1]).map(Optional::orElseThrow).subscribe(category::run,
+                        throwable -> showAvailableBench(sender, category)), throwable -> showAvailableCategory(sender));
+
+        /*getBenchHandler().getCategory(args[0]).ifPresentOrElse(category -> category.getBenchmark(args[1])
+                .ifPresentOrElse(category::run, () -> showAvailableBench(sender, category)), () -> showAvailableCategory(sender));*/
 
         return true;
     }

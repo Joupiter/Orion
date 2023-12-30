@@ -2,6 +2,7 @@ package fr.orion.api.benchmark;
 
 import lombok.Getter;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,8 +36,12 @@ public abstract class BenchHandler {
         getCategories().remove(name);
     }
 
-    public Optional<BenchCategory> getCategory(String name) {
+    /*public Optional<BenchCategory> getCategory(String name) {
         return Optional.ofNullable(getCategories().get(name));
+    }*/
+
+    public Mono<Optional<BenchCategory>> getCategory(String name) {
+        return Mono.just(Optional.ofNullable(getCategories().get(name)));
     }
 
     public <T> Optional<Bench> getBenchmark(Class<T> clazz) {
@@ -51,7 +56,7 @@ public abstract class BenchHandler {
     }
 
     public void run(String categoryName, String bench) {
-        getCategory(categoryName).ifPresent(category -> category.run(bench));
+        getCategory(categoryName).map(Optional::orElseThrow).subscribe(category -> category.run(bench));
     }
 
     public void runAll(BenchCategory category) {

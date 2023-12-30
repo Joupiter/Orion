@@ -6,7 +6,7 @@ public class BenchManager extends BenchHandler {
 
     @Override
     public void load() {
-        addCategories(new RedisBench());
+        addCategories(new RedisBench(), new ReactorBench());
     }
 
 }

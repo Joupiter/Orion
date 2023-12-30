@@ -43,7 +43,9 @@ public class TestListener implements Listener {
         }
 
         if (event.getMessage().equalsIgnoreCase("!mongo")) {
-            Mono.from(getPlugin().getApi().getDatabaseLoader().getMongoDatabase().getDatabase().getCollection("example").insertOne(new Document("k", "v"))).subscribe();
+            Mono.from(getPlugin().getApi().getDatabaseLoader().getMongoDatabase().getDatabase()
+                    .getCollection("example")
+                    .insertOne(new Document("k", "v"))).subscribe();
             event.setCancelled(true);
         }
 
@@ -58,7 +60,8 @@ public class TestListener implements Listener {
         }
 
         if (event.getMessage().equalsIgnoreCase("!pub")) {
-            getPlugin().getApi().getDatabaseLoader().getRedisMessenger().publish("example", new ExamplePacket("Fine"));
+            getPlugin().getApi().getDatabaseLoader().getRedisMessenger()
+                    .publish("example", new ExamplePacket("Fine"));
             event.setCancelled(true);
         }
 
@@ -68,7 +71,8 @@ public class TestListener implements Listener {
         }
 
         if (event.getMessage().equalsIgnoreCase("!redistest")) {
-            getPlugin().getApi().getDatabaseLoader().getRedisDatabase().getReactiveCommands().set("test", "work").subscribe();
+            getPlugin().getApi().getDatabaseLoader().getRedisDatabase().getReactiveCommands()
+                    .set("test", "work").subscribe();
             event.setCancelled(true);
         }
 

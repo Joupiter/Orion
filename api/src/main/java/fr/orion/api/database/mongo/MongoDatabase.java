@@ -6,22 +6,21 @@ import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import fr.orion.api.database.Database;
 import fr.orion.api.database.DatabaseCredentials;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 @Getter
+@RequiredArgsConstructor
 public abstract class MongoDatabase implements Database {
 
     private final DatabaseCredentials credentials;
 
     private MongoClient client;
     private com.mongodb.reactivestreams.client.MongoDatabase database;
-
-    public MongoDatabase(DatabaseCredentials credentials) {
-        this.credentials = credentials;
-    }
 
     @Override
     public void connect() {
