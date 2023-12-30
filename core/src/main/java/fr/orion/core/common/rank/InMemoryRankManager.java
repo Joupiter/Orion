@@ -1,24 +1,18 @@
 package fr.orion.core.common.rank;
 
-import fr.orion.api.OrionApi;
 import fr.orion.api.rank.Rank;
 import fr.orion.api.rank.RankRepository;
-import lombok.Getter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-public class RankManager implements RankRepository {
-
-    private final OrionApi api;
+public class InMemoryRankManager implements RankRepository {
 
     private final List<Rank> ranks;
 
-    public RankManager(OrionApi api) {
-        this.api = api;
+    public InMemoryRankManager() {
         this.ranks = new ArrayList<>();
     }
 

@@ -1,5 +1,6 @@
 package fr.orion.api;
 
+import fr.orion.api.benchmark.BenchHandler;
 import fr.orion.api.database.DatabaseLoader;
 import fr.orion.api.rank.RankRepository;
 import fr.orion.api.user.UserRepository;
@@ -13,6 +14,8 @@ public interface OrionApi {
     UserRepository getUserRepository();
 
     RankRepository getRankRepository();
+
+    BenchHandler getBenchHandler();
 
     static OrionApi getProvider() {
         return Provider.getProvider();

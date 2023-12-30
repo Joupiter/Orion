@@ -1,9 +1,7 @@
 package fr.orion.core.common.user;
 
-import fr.orion.api.OrionApi;
 import fr.orion.api.user.User;
 import fr.orion.api.user.UserRepository;
-import lombok.Getter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -11,15 +9,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-@Getter
-public class UserManager implements UserRepository {
-
-    private final OrionApi api;
+public class InMemoryUserManager implements UserRepository {
 
     private final ConcurrentMap<UUID, User> users;
 
-    public UserManager(OrionApi api) {
-        this.api = api;
+    public InMemoryUserManager() {
         this.users = new ConcurrentHashMap<>();
     }
 

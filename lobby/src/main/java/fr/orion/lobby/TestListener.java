@@ -7,6 +7,7 @@ import fr.orion.core.common.database.redis.packet.ExamplePacket;
 import fr.orion.core.common.database.redis.packet.FinePacket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import reactor.core.publisher.Mono;
 
 @Getter
 @AllArgsConstructor
@@ -37,6 +39,11 @@ public class TestListener implements Listener {
 
         if (event.getMessage().equalsIgnoreCase("!addcoins")) {
             getPlugin().getApi().getUserRepository().getUser(player.getUniqueId()).subscribe(this::agfgdgdfgf);
+            event.setCancelled(true);
+        }
+
+        if (event.getMessage().equalsIgnoreCase("!mongo")) {
+            Mono.from(getPlugin().getApi().getDatabaseLoader().getMongoDatabase().getDatabase().getCollection("example").insertOne(new Document("k", "v"))).subscribe();
             event.setCancelled(true);
         }
 
