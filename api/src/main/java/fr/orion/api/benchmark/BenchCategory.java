@@ -2,6 +2,7 @@ package fr.orion.api.benchmark;
 
 import lombok.Getter;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,14 +48,15 @@ public abstract class BenchCategory {
     }
 
     public void run(Bench bench) {
-        System.out.println("[Benchmark] (" + getName() + ") START: " + bench.getName());
-        bench.test();
+        Mono.just(bench).doOnNext(this::notify).subscribe(Bench::test);
     }
 
     public void runAll() {
-        Flux.fromIterable(getBenchmarks())
-                .onErrorContinue((throwable, bench) -> throwable.printStackTrace())
-                .subscribe(this::run);
+        Flux.fromIterable(getBenchmarks()).subscribe(this::run);
+    }
+
+    private void notify(Bench bench) {
+        System.out.println("[Benchmark] (" + getName() + ") START: " + bench.getName());
     }
 
 }
