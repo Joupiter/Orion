@@ -64,4 +64,12 @@ public abstract class BenchCategory {
         System.out.println("[Benchmark] (" + getName() + ") START: " + bench.getName());
     }
 
+    public String getThreadName() {
+        return Thread.currentThread().getName();
+    }
+
+    public String getThreadNameFormatted() {
+        return "[" + getThreadName() + "] ";
+    }
+
 }
