@@ -13,6 +13,9 @@ public class ReactorBench extends BenchCategory {
     @Override
     public void addDefaults() {
         addBenchmark(new Bench() {
+
+            private long start;
+
             @Override
             public String getName() {
                 return "test1";
@@ -20,8 +23,14 @@ public class ReactorBench extends BenchCategory {
 
             @Override
             public void test() {
-                Flux.range(1, 600).map(integer -> integer + "#").subscribe(this::notify, Throwable::printStackTrace);
+                start = System.currentTimeMillis();
+                Flux.range(1, 100000).map(integer -> integer + "#").doOnComplete(this::complete).subscribe(this::notify, Throwable::printStackTrace);
             }
+
+            private void complete() {
+                notify("END IN " + (System.currentTimeMillis() - start));
+            }
+
         });
     }
 
