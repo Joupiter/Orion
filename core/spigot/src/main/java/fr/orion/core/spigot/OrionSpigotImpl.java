@@ -1,13 +1,14 @@
-package fr.orion.core;
+package fr.orion.core.spigot;
 
 import fr.orion.api.benchmark.BenchHandler;
 import fr.orion.api.database.DatabaseLoader;
 import fr.orion.api.rank.RankRepository;
 import fr.orion.api.user.UserRepository;
-import fr.orion.core.common.benchmark.BenchManager;
-import fr.orion.core.common.database.DatabaseManager;
+import fr.orion.core.spigot.api.OrionSpigotApi;
 import fr.orion.core.common.rank.InMemoryRankManager;
 import fr.orion.core.common.user.InMemoryUserManager;
+import fr.orion.core.common.benchmark.BenchManager;
+import fr.orion.core.common.database.DatabaseManager;
 
 public class OrionSpigotImpl extends OrionSpigotApi {
 

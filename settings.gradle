@@ -1,9 +1,11 @@
 rootProject.name = 'Orion'
 include 'api'
 include 'lobby'
+
+include 'core:common'
 include 'core:spigot'
 include 'core:bungee'
 
+findProject(':core:common')?.name = 'common'
 findProject(':core:spigot')?.name = 'spigot'
 findProject(':core:bungee')?.name = 'bungee'
-

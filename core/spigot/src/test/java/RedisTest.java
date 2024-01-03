@@ -2,7 +2,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.orion.api.OrionApi;
 import fr.orion.api.user.User;
-import fr.orion.core.OrionImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

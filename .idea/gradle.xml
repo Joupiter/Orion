@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/api" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/bungee" />
+            <option value="$PROJECT_DIR$/core/common" />
             <option value="$PROJECT_DIR$/core/spigot" />
             <option value="$PROJECT_DIR$/lobby" />
           </set>

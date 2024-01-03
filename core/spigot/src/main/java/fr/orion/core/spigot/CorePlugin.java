@@ -1,7 +1,8 @@
-package fr.orion.core;
+package fr.orion.core.spigot;
 
 import fr.orion.api.OrionApi;
-import fr.orion.core.command.BenchmarkingCommand;
+import fr.orion.core.spigot.api.OrionSpigotApi;
+import fr.orion.core.spigot.command.BenchmarkingCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CorePlugin extends JavaPlugin {

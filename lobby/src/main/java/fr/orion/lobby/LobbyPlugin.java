@@ -1,8 +1,7 @@
 package fr.orion.lobby;
 
 import fr.orion.api.OrionApi;
-import fr.orion.core.OrionSpigotApi;
-import fr.orion.core.command.BenchmarkingCommand;
+import fr.orion.core.spigot.api.OrionSpigotApi;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class LobbyPlugin extends JavaPlugin {

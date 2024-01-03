@@ -1,17 +1,14 @@
-package fr.orion.core.command;
+package fr.orion.core.spigot.command;
 
 import fr.orion.api.benchmark.Bench;
 import fr.orion.api.benchmark.BenchCategory;
 import fr.orion.api.benchmark.BenchHandler;
-import fr.orion.core.CorePlugin;
+import fr.orion.core.spigot.CorePlugin;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,7 +31,7 @@ public class BenchmarkingCommand implements CommandExecutor {
                 .map(Optional::orElseThrow)
                 .subscribe(category -> category.getBenchmark(args[1]).map(Optional::orElseThrow).subscribe(category::run,
                         throwable -> showAvailableBench(sender, category)), throwable -> showAvailableCategory(sender));
-        getPlugin().getApi().s(sender);
+
         return true;
     }
 

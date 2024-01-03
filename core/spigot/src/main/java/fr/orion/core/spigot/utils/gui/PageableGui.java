@@ -1,4 +1,4 @@
-package fr.orion.core.utils.gui;
+package fr.orion.core.spigot.utils.gui;
 
 import fr.orion.api.utils.Pagination;
 import lombok.Getter;

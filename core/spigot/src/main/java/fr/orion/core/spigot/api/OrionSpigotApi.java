@@ -1,4 +1,4 @@
-package fr.orion.core;
+package fr.orion.core.spigot.api;
 
 import fr.orion.api.OrionApi;
 import org.bukkit.command.CommandSender;

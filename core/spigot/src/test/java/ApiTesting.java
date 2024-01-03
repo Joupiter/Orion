@@ -3,7 +3,6 @@ import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
 import fr.orion.api.rank.Rank;
 import fr.orion.api.user.User;
-import fr.orion.core.OrionImpl;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 

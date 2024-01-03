@@ -1,4 +1,4 @@
-package fr.orion.core.utils.item;
+package fr.orion.core.spigot.utils.item;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;

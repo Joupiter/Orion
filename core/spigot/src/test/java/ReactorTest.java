@@ -15,9 +15,7 @@ public class ReactorTest {
                 .doOnNext(s -> System.out.println("next: " + s))
                 .subscribe(s -> System.out.println("complete: " + s));
 
-        Optional<String> ccc = Optional.ofNullable(null);
-
-        Mono.just(ccc)
+        Mono.just(Optional.empty())
                 .map(Optional::orElseThrow)
                 .subscribe(System.out::println, throwable -> System.out.println("error :)"));
     }

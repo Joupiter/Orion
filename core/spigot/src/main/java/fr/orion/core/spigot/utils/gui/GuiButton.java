@@ -1,4 +1,4 @@
-package fr.orion.core.utils.gui;
+package fr.orion.core.spigot.utils.gui;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
