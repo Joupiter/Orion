@@ -9,7 +9,7 @@ public class Example extends JavaPlugin {
     @Override
     public void onEnable() {
         Document document = new Document("key", "value");
-        
+
         Mono.from(getApi().getDatabaseLoader()
                         .getMongoDatabase()
                         .getDatabase()
