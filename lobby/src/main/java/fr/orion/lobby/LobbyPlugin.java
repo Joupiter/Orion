@@ -1,6 +1,7 @@
 package fr.orion.lobby;
 
 import fr.orion.api.OrionApi;
+import fr.orion.core.OrionSpigotApi;
 import fr.orion.core.command.BenchmarkingCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,8 +12,8 @@ public class LobbyPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TestListener(this), this);
     }
 
-    public OrionApi getApi() {
-        return OrionApi.getProvider();
+    public OrionSpigotApi getApi() {
+        return (OrionSpigotApi) OrionApi.getProvider();
     }
 
     @Override

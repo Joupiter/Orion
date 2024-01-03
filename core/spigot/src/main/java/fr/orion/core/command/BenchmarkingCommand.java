@@ -34,7 +34,7 @@ public class BenchmarkingCommand implements CommandExecutor {
                 .map(Optional::orElseThrow)
                 .subscribe(category -> category.getBenchmark(args[1]).map(Optional::orElseThrow).subscribe(category::run,
                         throwable -> showAvailableBench(sender, category)), throwable -> showAvailableCategory(sender));
-
+        getPlugin().getApi().s(sender);
         return true;
     }
 

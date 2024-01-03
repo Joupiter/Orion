@@ -8,7 +8,7 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        OrionApi.setProvider(new OrionImpl());
+        OrionApi.setProvider(new OrionSpigotImpl());
     }
 
     @Override
@@ -17,8 +17,8 @@ public class CorePlugin extends JavaPlugin {
         getCommand("bench").setExecutor(new BenchmarkingCommand(this, getApi().getBenchHandler()));
     }
 
-    public OrionApi getApi() {
-        return OrionApi.getProvider();
+    public OrionSpigotApi getApi() {
+        return (OrionSpigotApi) OrionApi.getProvider();
     }
 
     @Override
