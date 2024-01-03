@@ -3,10 +3,10 @@ import fr.orion.api.benchmark.BenchHandler;
 import fr.orion.api.database.DatabaseLoader;
 import fr.orion.api.rank.RankRepository;
 import fr.orion.api.user.UserRepository;
-import fr.orion.core.spigot.common.benchmark.BenchManager;
-import fr.orion.core.spigot.common.database.DatabaseManager;
-import fr.orion.core.spigot.common.rank.InMemoryRankManager;
-import fr.orion.core.spigot.common.user.InMemoryUserManager;
+import fr.orion.core.common.benchmark.BenchManager;
+import fr.orion.core.common.database.DatabaseManager;
+import fr.orion.core.common.rank.InMemoryRankManager;
+import fr.orion.core.common.user.InMemoryUserManager;
 
 public class OrionImpl implements OrionApi {
 
