@@ -4,6 +4,7 @@ import fr.orion.api.user.User;
 import fr.orion.api.user.UserRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,12 +20,12 @@ public class InMemoryUserManager implements UserRepository {
 
     @Override
     public Mono<User> getUser(UUID id) {
-        return Mono.justOrEmpty(users.computeIfAbsent(id, k -> new User(id, 0)));
+        return Mono.justOrEmpty(users.computeIfAbsent(id, k -> new User(id, 0))).subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
     public Flux<User> getUsers() {
-        return Flux.fromIterable(users.values());
+        return Flux.fromIterable(users.values()).subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override

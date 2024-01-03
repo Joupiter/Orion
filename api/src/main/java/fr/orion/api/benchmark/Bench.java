@@ -1,14 +1,48 @@
 package fr.orion.api.benchmark;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public interface Bench {
+import java.util.function.Consumer;
 
-    String getName();
+@Getter
+@AllArgsConstructor
+public abstract class Bench {
 
-    void test();
+    private final String name;
+    private final long startTime;
 
-    default void notify(String message) {
+    public Bench(String name) {
+        this.name = name;
+        this.startTime = System.currentTimeMillis();
+    }
+
+    public abstract void test();
+
+    public static Bench newBench(String name, Runnable runnable) {
+        return newBench(name, bench -> runnable.run());
+    }
+
+    public static Bench newBench(String name, Consumer<Bench> consumer) {
+        return new Bench(name) {
+            @Override
+            public void test() {
+                consumer.accept(this);
+                notifyEnd();
+            }
+        };
+    }
+
+    public void notify(String message) {
         System.out.println("[Benchmark] (" + getName() + ") : " + message);
+    }
+
+    public void notifyEnd() {
+        notify("END IN " + getEndTime());
+    }
+
+    public long getEndTime() {
+        return System.currentTimeMillis() - getStartTime();
     }
 
 }

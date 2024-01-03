@@ -5,8 +5,6 @@ import fr.orion.api.benchmark.BenchCategory;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.stream.IntStream;
-
 public class ReactorBench extends BenchCategory {
 
     public ReactorBench() {
@@ -15,43 +13,16 @@ public class ReactorBench extends BenchCategory {
 
     @Override
     public void addDefaults() {
-        addBenchmarks(new Bench() {
+        addBenchmark(getFirstTest());
+    }
 
-            private long start;
-
-            @Override
-            public String getName() {
-                return "test1";
-            }
-
-            @Override
-            public void test() {
-                start = System.currentTimeMillis();
-                Flux.range(1, 1000000).flatMap(integer -> Flux.just(getThreadNameFormatted() + "#" + integer))
-                        .doOnComplete(this::complete)
+    private Bench getFirstTest() {
+        return Bench.newBench("test1", bench ->
+                Flux.range(1, 1000000)
+                        .flatMap(integer -> Flux.just(getThreadNameFormatted() + "#" + integer))
+                        .doOnComplete(bench::notifyEnd)
                         .subscribeOn(Schedulers.boundedElastic())
-                        .subscribe(this::notify);
-            }
-
-            private void complete() {
-                notify("END IN " + (System.currentTimeMillis() - start));
-            }
-
-        }, new Bench() {
-
-            @Override
-            public String getName() {
-                return "test2";
-            }
-
-            @Override
-            public void test() {
-                long s = System.currentTimeMillis();
-                IntStream.rangeClosed(1, 1000000).mapToObj(integer -> getThreadNameFormatted() + "#" + integer).forEach(this::notify);
-                notify("END IN " + (System.currentTimeMillis() - s));
-            }
-
-        });
+                        .subscribe(bench::notify));
     }
 
 }

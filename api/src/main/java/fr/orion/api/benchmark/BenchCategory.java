@@ -27,6 +27,9 @@ public abstract class BenchCategory {
         getBenchmarks().add(bench);
     }
 
+    public void addBenchmark(String name, Runnable runnable) {
+        addBenchmark(Bench.newBench(name, runnable));
+    }
     public void addBenchmarks(Bench... bench) {
         Arrays.asList(bench).forEach(this::addBenchmark);
     }

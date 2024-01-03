@@ -11,35 +11,15 @@ public class RedisBench extends BenchCategory {
 
     @Override
     public void addDefaults() {
-        addBenchmarks(new RedisExampleBench(), new RedisGetBench());
+        addBenchmarks(getRedisExampleBench(), getRedisGetBench());
     }
 
-    static class RedisExampleBench implements Bench {
-
-        @Override
-        public String getName() {
-            return "first";
-        }
-
-        @Override
-        public void test() {
-            System.out.println("first testing");
-        }
-
+    private Bench getRedisExampleBench() {
+        return Bench.newBench("first", bench -> bench.notify("first testing"));
     }
 
-    static class RedisGetBench implements Bench {
-
-        @Override
-        public String getName() {
-            return "second";
-        }
-
-        @Override
-        public void test() {
-            System.out.println("second testing");
-        }
-
+    private Bench getRedisGetBench() {
+        return Bench.newBench("second", bench -> bench.notify("second testing"));
     }
 
 }

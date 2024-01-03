@@ -14,6 +14,10 @@
 
 [Lettuce](https://github.com/lettuce-io/lettuce-core): A Java Redis client providing fully non-blocking and reactive behavior.
 
+[MongoDB](https://github.com/mongodb/mongo-java-driver-reactivestreams): Reactive Streams driver for MongoDB.
+
 [Lombok](https://github.com/projectlombok/lombok): A Java library that helps to reduce boilerplate code and improve code conciseness.
 
 [Caffeine](https://github.com/ben-manes/caffeine): A high-performance, near-optimal caching library.
+
+[Gson](https://github.com/google/gson): A Java library for JSON serialization and deserialization.
