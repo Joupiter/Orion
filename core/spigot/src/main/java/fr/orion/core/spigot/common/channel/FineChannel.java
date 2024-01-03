@@ -1,4 +1,4 @@
-package fr.orion.core.common.database.redis.channel;
+package fr.orion.core.spigot.common.channel;
 
 import fr.orion.api.database.redis.pubsub.RedisChannel;
 import fr.orion.api.database.redis.pubsub.RedisListener;

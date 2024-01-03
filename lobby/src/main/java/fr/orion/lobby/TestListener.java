@@ -1,10 +1,10 @@
 package fr.orion.lobby;
 
 import fr.orion.api.user.User;
-import fr.orion.core.common.database.redis.channel.ExampleChannel;
-import fr.orion.core.common.database.redis.channel.FineChannel;
 import fr.orion.core.common.database.redis.packet.ExamplePacket;
 import fr.orion.core.common.database.redis.packet.FinePacket;
+import fr.orion.core.spigot.common.channel.ExampleChannel;
+import fr.orion.core.spigot.common.channel.FineChannel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
@@ -16,6 +16,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @Getter
 @AllArgsConstructor
@@ -45,7 +46,8 @@ public class TestListener implements Listener {
         if (event.getMessage().equalsIgnoreCase("!mongo")) {
             Mono.from(getPlugin().getApi().getDatabaseLoader().getMongoDatabase().getDatabase()
                     .getCollection("example")
-                    .insertOne(new Document("k", "v"))).subscribe();
+                    .insertOne(new Document("k", "v")))
+                    .subscribeOn(Schedulers.boundedElastic()).subscribe();
             event.setCancelled(true);
         }
 
@@ -72,7 +74,8 @@ public class TestListener implements Listener {
 
         if (event.getMessage().equalsIgnoreCase("!redistest")) {
             getPlugin().getApi().getDatabaseLoader().getRedisDatabase().getReactiveCommands()
-                    .set("test", "work").subscribe();
+                    .set("test", "work")
+                    .subscribeOn(Schedulers.boundedElastic()).subscribe();
             event.setCancelled(true);
         }
 

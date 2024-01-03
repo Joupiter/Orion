@@ -1,4 +1,4 @@
-package fr.orion.core.bungee.api;
+package fr.orion.core.bungee.common.api;
 
 import fr.orion.api.OrionApi;
 

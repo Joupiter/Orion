@@ -1,4 +1,4 @@
-package fr.orion.core.common.benchmark;
+package fr.orion.core.spigot.common.benchmark;
 
 import fr.orion.api.benchmark.Bench;
 import fr.orion.api.benchmark.BenchCategory;

@@ -36,10 +36,6 @@ public abstract class BenchHandler {
         getCategories().remove(name);
     }
 
-    /*public Optional<BenchCategory> getCategory(String name) {
-        return Optional.ofNullable(getCategories().get(name));
-    }*/
-
     public Mono<Optional<BenchCategory>> getCategory(String name) {
         return Mono.just(Optional.ofNullable(getCategories().get(name)));
     }

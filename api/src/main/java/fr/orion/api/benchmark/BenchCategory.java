@@ -30,6 +30,7 @@ public abstract class BenchCategory {
     public void addBenchmark(String name, Runnable runnable) {
         addBenchmark(Bench.newBench(name, runnable));
     }
+
     public void addBenchmarks(Bench... bench) {
         Arrays.asList(bench).forEach(this::addBenchmark);
     }
@@ -42,14 +43,9 @@ public abstract class BenchCategory {
         getBenchmark(name).map(Optional::orElseThrow).subscribe(getBenchmarks()::remove);
     }
 
-    /*public Optional<Bench> getBenchmark(String name) {
-        return getBenchmarks().stream().filter(bench -> bench.getName().equals(name)).findFirst();
-    }*/
-
     public Mono<Optional<Bench>> getBenchmark(String name) {
         return Mono.just(getBenchmarks().stream().filter(bench -> bench.getName().equals(name)).findFirst());
     }
-
 
     public void run(String name) {
         getBenchmark(name).map(Optional::orElseThrow).subscribe(this::run);

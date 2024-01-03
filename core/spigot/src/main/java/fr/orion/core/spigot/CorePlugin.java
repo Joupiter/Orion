@@ -1,8 +1,9 @@
 package fr.orion.core.spigot;
 
 import fr.orion.api.OrionApi;
-import fr.orion.core.spigot.api.OrionSpigotApi;
+import fr.orion.core.spigot.common.api.OrionSpigotApi;
 import fr.orion.core.spigot.command.BenchmarkingCommand;
+import fr.orion.core.spigot.common.OrionSpigotImpl;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CorePlugin extends JavaPlugin {
@@ -14,7 +15,7 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getApi().getDatabaseLoader().connect();
+        getApi().load();
         getCommand("bench").setExecutor(new BenchmarkingCommand(this, getApi().getBenchHandler()));
     }
 
@@ -24,7 +25,7 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getApi().getDatabaseLoader().disconnect();
+        getApi().unload();
     }
 
 }

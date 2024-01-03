@@ -9,6 +9,7 @@ import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.reactive.ChannelMessage;
 import io.lettuce.core.pubsub.api.reactive.RedisPubSubReactiveCommands;
 import lombok.Getter;
+import reactor.core.scheduler.Schedulers;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -30,7 +31,7 @@ public abstract class AbstractRedisMessenger {
 
     public void connect() {
         Utils.ifFalse(getChannelNamesList().isEmpty(), () -> getReactivePubSub().subscribe(getChannelNames()).subscribe());
-        getReactivePubSub().observeChannels().doOnNext(this::onReceive).subscribe();
+        getReactivePubSub().observeChannels().doOnNext(this::onReceive).subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
 
     public void disconnect() {
@@ -61,7 +62,7 @@ public abstract class AbstractRedisMessenger {
     }
 
     public void publish(String channel, RedisPacket packet) {
-        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getReactiveCommands().publish(channel, toJson(packet)).subscribe();
+        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getReactiveCommands().publish(channel, toJson(packet)).subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
 
     private <T extends RedisPacket> T fromJson(ChannelMessage<String, String> channelMessage, Type type) {
