@@ -6,7 +6,6 @@ import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import fr.orion.api.database.Database;
 import fr.orion.api.database.DatabaseCredentials;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bson.codecs.configuration.CodecRegistries;

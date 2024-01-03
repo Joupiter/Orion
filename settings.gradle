@@ -1,6 +1,5 @@
 rootProject.name = 'Orion'
 include 'api'
-include 'core'
 include 'lobby'
 include 'core:spigot'
 include 'core:bungee'
