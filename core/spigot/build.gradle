@@ -1,6 +1,6 @@
 dependencies {
     implementation project(path: ':api', configuration: 'shadow')
-    compileOnly files('../libs/spigot.jar')
+    compileOnly files('../../libs/spigot.jar')
     implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
     implementation 'io.lettuce:lettuce-core:6.3.0.RELEASE'
     implementation 'org.mongodb:mongodb-driver-reactivestreams:4.11.1'
