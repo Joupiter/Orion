@@ -1,30 +1,19 @@
 TODO: Velocity Api and Spigot Api
 
-```java
-public abstract class OrionSpigotApi extends OrionImpl { 
-    
-}
-```
-
 Plugin:
 ```java
-public class CorePlugin extends JavaPlugin {
-    
+public class Example extends JavaPlugin {
+
     private OrionSpigotApi api;
-    
-    @Override
-    public void onLoad() {
-        OrionApi.setProvider(new OrionSpigotApi());
-    }
 
     @Override
     public void onEnable() {
-        getApi().getDatabaseLoader().connect();
+        Document document = new Document("key", "value");
+        Mono.from(getApi().getDatabaseLoader().getMongoDatabase().getDatabase().getCollection("example").insertOne(document)).then();
     }
 
-    @Override
-    public void onDisable() {
-        getApi().getDatabaseLoader().disconnect();
+    public OrionSpigotApi getApi() {
+        return (OrionSpigotApi) OrionApi.getProvider();
     }
     
 }
