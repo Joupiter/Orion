@@ -17,7 +17,7 @@ public class ThreadGui extends PageableGui<LobbyPlugin, GuiButton> {
 
     private final Player player;
 
-    protected ThreadGui(LobbyPlugin plugin, Player player) {
+    public ThreadGui(LobbyPlugin plugin, Player player) {
         super(plugin, "&6Threads", 5, 36);
         this.player = player;
         Thread.getAllStackTraces().keySet().forEach(this::addThreadButton);
