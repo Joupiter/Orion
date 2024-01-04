@@ -9,12 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CorePlugin extends JavaPlugin {
 
     @Override
-    public void onLoad() {
-        OrionApi.setProvider(new OrionSpigotImpl());
-    }
-
-    @Override
     public void onEnable() {
+        OrionApi.setProvider(new OrionSpigotImpl(this));
         getApi().load();
         getCommand("bench").setExecutor(new BenchmarkingCommand(this, getApi().getBenchHandler()));
     }

@@ -1,5 +1,6 @@
 package fr.orion.core.spigot.utils.gui;
 
+import fr.orion.api.utils.threading.MultiThreading;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -55,6 +57,10 @@ public abstract class Gui<P extends JavaPlugin> {
 
     public void close(HumanEntity player) {
         player.closeInventory();
+    }
+
+    public void setInventoryName(Player player, String name) {
+        MultiThreading.schedule(() -> InventoryUpdate.updateInventory(player, ChatColor.translateAlternateColorCodes('&', name)), 20, TimeUnit.MILLISECONDS);
     }
 
     public void setItem(int slot, GuiButton button) {

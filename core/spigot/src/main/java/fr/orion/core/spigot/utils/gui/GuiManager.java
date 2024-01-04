@@ -79,8 +79,10 @@ public class GuiManager implements Listener {
     public void onClose(InventoryCloseEvent event) {
         getGui(event.getPlayer())
                 .filter(gui -> event.getInventory().equals(gui.getInventory()))
-                .filter(gui -> gui.getCloseConsumer() != null)
-                .ifPresent(gui -> gui.getCloseConsumer().accept(event));
+                .ifPresent(gui -> {
+                    Optional.ofNullable(gui.getCloseConsumer()).ifPresent(consumer -> consumer.accept(event));
+                    getGuis().remove(event.getPlayer().getUniqueId());
+                });
     }
 
     @EventHandler
