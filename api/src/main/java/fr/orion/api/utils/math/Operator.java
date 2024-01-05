@@ -2,6 +2,9 @@ package fr.orion.api.utils.math;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.DoubleBinaryOperator;
 
 @Getter
@@ -19,6 +22,10 @@ public enum Operator {
 
     public double apply(double a, double b) {
         return getOperation().applyAsDouble(a, b);
+    }
+
+    public double apply(double... numbers) {
+        return Arrays.stream(numbers).reduce(this::apply).orElseThrow();
     }
 
 }

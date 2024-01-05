@@ -1,23 +1,24 @@
-package fr.orion.lobby.common.gui;
+package fr.orion.core.spigot.common.gui;
 
+import fr.orion.api.utils.threading.MultiThreading;
 import fr.orion.core.spigot.utils.gui.GuiButton;
 import fr.orion.core.spigot.utils.gui.PageableGui;
 import fr.orion.core.spigot.utils.item.ItemBuilder;
-import fr.orion.lobby.LobbyPlugin;
 import lombok.Getter;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.management.ManagementFactory;
 
 @Getter
-public class ThreadGui extends PageableGui<LobbyPlugin, GuiButton> {
+public class ThreadGui extends PageableGui<JavaPlugin, GuiButton> {
 
     private final Player player;
 
-    public ThreadGui(LobbyPlugin plugin, Player player) {
+    public ThreadGui(JavaPlugin plugin, Player player) {
         super(plugin, "&6Threads", 5, 36);
         this.player = player;
         Thread.getAllStackTraces().keySet().forEach(this::addThreadButton);
@@ -52,10 +53,10 @@ public class ThreadGui extends PageableGui<LobbyPlugin, GuiButton> {
         return new GuiButton(new ItemBuilder(Material.BOOK)
                 .setName("&7» &aInformations")
                 .addLore("&7▏ &eSize&7: &a" + Thread.activeCount(),
+                        "&7▏ &eOrion Size&7: &a" + MultiThreading.getTotal(),
                         "&7▏ &eHeapMemory Usage&7: &2" + (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024) / 1024 + " MB",
                         "&7▏ &eNonHeapMemory Usage&7: &2" + (ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getUsed() / 1024) / 1024 + " MB",
-                        "&7▏ &eThread Peak&7: &9" + ManagementFactory.getThreadMXBean().getPeakThreadCount(),
-                        "&7▏ &ePending Objects&7: &3" + ManagementFactory.getMemoryMXBean().getObjectPendingFinalizationCount()).build());
+                        "&7▏ &eThread Peak&7: &9" + ManagementFactory.getThreadMXBean().getPeakThreadCount()).build());
     }
 
     @Override

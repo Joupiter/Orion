@@ -3,9 +3,15 @@ package fr.orion.api.utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import org.bukkit.ChatColor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class Utils {
@@ -25,6 +31,10 @@ public class Utils {
 
     public void ifFalse(boolean condition, Runnable runnable) {
         if (!condition) runnable.run();
+    }
+
+    public Map<Integer, String> stringListToMap(List<String> messages) {
+        return messages.stream().collect(Collectors.toMap(messages::indexOf, Function.identity()));
     }
 
     @Getter

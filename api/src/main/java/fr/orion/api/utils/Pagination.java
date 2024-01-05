@@ -1,10 +1,14 @@
 package fr.orion.api.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public class Pagination<T> {
 
     private final List<Page> pages;
@@ -15,7 +19,8 @@ public class Pagination<T> {
     public Pagination(int elementsPerPage) {
         this.pages = new ArrayList<>();
         this.elements = new ArrayList<>();
-        setElementsPerPage(elementsPerPage);
+        this.elementsPerPage = elementsPerPage;
+        this.generatePages();
     }
 
     public Pagination(Collection<T> elements, int elementsPerPage) {
@@ -24,175 +29,136 @@ public class Pagination<T> {
     }
 
     public void addElement(T element) {
-        this.elements.add(element);
+        getElements().add(element);
 
-        if (this.getRequiredPages() > this.countPages()) {
-            int index = this.elements.size() - 1;
-            Page page = new Page(this.countPages() + 1, index, index + this.elementsPerPage);
-
-            this.pages.add(page);
+        if (getRequiredPages() > countPages()) {
+            int index = getElements().size() - 1;
+            getPages().add(new Page(this.countPages() + 1, index, index + getElementsPerPage()));
         }
     }
 
     public void removeElement(T element) {
-        if (!this.elements.contains(element)) return;
+        if (!getElements().contains(element)) return;
 
-        this.elements.remove(element);
-        int pages = this.countPages();
+        getElements().remove(element);
+        int pages = countPages();
 
-        if (pages > 1 && this.getRequiredPages() < pages) this.pages.remove(this.getLast());
+        if (pages > 1 && getRequiredPages() < pages)
+            getPages().remove(getLast());
     }
 
     public void removeElement(int index) {
         if (index < 0)
             throw new IllegalArgumentException("Index cannot be negative.");
-
-        if (index >= this.elements.size())
+        if (index >= getElements().size())
             throw new IllegalArgumentException(String.format("Index : %d Size: %d", index, this.countElements()));
 
-        this.elements.remove(index);
+        getElements().remove(index);
+        int pages = countPages();
 
-        int pages = this.countPages();
-
-        if (pages > 1 && this.getRequiredPages() < pages)
-            this.pages.remove(this.getLast());
+        if (pages > 1 && getRequiredPages() < pages)
+            getPages().remove(getLast());
     }
 
     public boolean containsElement(T element) {
-        return this.elements.contains(element);
+        return getElements().contains(element);
     }
 
     public int indexOf(T element) {
-        return this.elements.indexOf(element);
+        return getElements().indexOf(element);
     }
 
     public Page getLast() {
-        return this.pages.get(this.pages.size() - 1);
+        return getPages().get(getPages().size() - 1);
     }
 
     public Page getFirst() {
-        return this.pages.get(0);
+        return getPages().get(0);
     }
 
     public boolean contains(Page page) {
-        return this.pages.contains(page);
+        return getPages().contains(page);
     }
 
     public boolean isLast(Page page) {
-        return page.equals(this.getLast());
+        return page.equals(getLast());
     }
 
     public boolean isFirst(Page page) {
-        return page.equals(this.getFirst());
+        return page.equals(getFirst());
     }
 
     public boolean hasNext(Page page) {
-        if (!this.contains(page))
-            throw new IllegalArgumentException("Page does not belong to the pagination.");
-
-        return !this.isLast(page);
+        return !isLast(page);
     }
 
     public boolean hasPrevious(Page page) {
-        if (!this.contains(page))
-            throw new IllegalArgumentException("Page does not belong to the pagination.");
-
-        return !this.isFirst(page);
+        return !isFirst(page);
     }
 
     public Page getNext(Page page) {
-        if (!this.contains(page))
-            throw new IllegalArgumentException("Page does not belong to the pagination.");
-
-        return this.hasNext(page) ? this.pages.get(this.pages.indexOf(page) + 1) : null;
+        return hasNext(page) ? getPages().get(getPages().indexOf(page) + 1) : null;
     }
 
     public Page getPrevious(Page page) {
-        if (!this.contains(page))
-            throw new IllegalArgumentException("Page does not belong to the pagination.");
-
-        return this.hasPrevious(page) ? this.pages.get(this.pages.indexOf(page) - 1) : null;
+        return hasPrevious(page) ? getPages().get(getPages().indexOf(page) - 1) : null;
     }
 
     public Page getPage(int number) {
-        if (number < 1 || number > this.pages.size())
-            throw new IllegalArgumentException(String.format("Page number must be between 1 and %d (include).", this.pages.size()));
+        if (number < 1 || number > getPages().size())
+            throw new IllegalArgumentException(String.format("Page number must be between 1 and %d (include).", getPages().size()));
 
-        return this.pages.get(number - 1);
+        return getPages().get(number - 1);
     }
 
     public boolean hasPage(int number) {
-        return number > 0 && number <= this.pages.size();
+        return number > 0 && number <= getPages().size();
     }
 
     public int countPages() {
-        return this.pages.size();
-    }
-
-    public List<Page> getPages() {
-        return new ArrayList<>(this.pages);
-    }
-
-    public int getElementsPerPage() {
-        return this.elementsPerPage;
+        return getPages().size();
     }
 
     public void setElementsPerPage(int elementsPerPage) {
         this.elementsPerPage = elementsPerPage;
-        this.generatePages();
+        generatePages();
     }
 
     public int countElements() {
-        return this.elements.size();
+        return getElements().size();
     }
 
     private int getRequiredPages() {
-        return (int) Math.ceil((double) this.elements.size() / this.elementsPerPage);
+        return (int) Math.ceil((double) getElements().size() / getElementsPerPage());
     }
 
     private void generatePages() {
-        List<T> elements = new ArrayList<>(this.elements);
+        List<T> elements = new ArrayList<>(getElements());
 
-        this.pages.clear();
-        this.elements.clear();
-
+        getPages().clear();
+        getElements().clear();
         elements.forEach(this::addElement);
 
-        if (this.pages.size() == 0)
-            this.pages.add(new Page(1, 0, this.elementsPerPage));
+        if (getPages().size() == 0)
+            getPages().add(new Page(1, 0, getElementsPerPage()));
     }
 
-    public List<T> getElements() {
-        return Collections.unmodifiableList(this.elements);
-    }
-
+    @Getter
+    @AllArgsConstructor
     public class Page {
 
         private final int number, begin, end;
 
-        private Page(int number, int begin, int end) {
-            this.number = number;
-            this.begin = begin;
-            this.end = end;
-        }
-
         public List<T> getElements() {
-            List<T> allElements = Pagination.this.elements;
-            int toIndex = Math.min(allElements.size(), this.end);
-
-            return allElements.subList(this.begin, toIndex);
+            return Pagination.this.getElements().subList(getBegin(), Math.min(Pagination.this.countElements(), getEnd()));
         }
 
         public int countElements() {
-            return this.getElements().size();
+            return getElements().size();
         }
 
-        public int getNumber() {
-            return this.number;
-        }
-
-        public boolean belongsToPage(T element) {
-            return this.getElements().contains(element);
+        public boolean contains(T element) {
+            return getElements().contains(element);
         }
 
     }

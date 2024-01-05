@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Getter
 public abstract class RequestManager<T extends Request> {
 
-    private static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private final static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     private final long delay;
     private final TimeUnit timeUnit;
