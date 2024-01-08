@@ -3,14 +3,13 @@ package fr.orion.api.utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
-import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -27,6 +26,39 @@ public class Utils {
 
     public void ifTrue(boolean condition, Runnable runnable) {
         if (condition) runnable.run();
+    }
+
+    public <T> void ifTrue(T type, Predicate<T> predicate, Runnable runnable) {
+        if (predicate.test(type)) runnable.run();
+    }
+
+    public void ifTrue(boolean firstCondition, Runnable firstRunnable, boolean secondCondition, Runnable secondRunnable) {
+        ifTrue(firstCondition, firstRunnable);
+        ifTrue(secondCondition, secondRunnable);
+    }
+
+    public <T> void ifTrue(T type, Predicate<T> firstPredicate, Runnable firstRunnable, Predicate<T> secondPredicate, Runnable secondRunnable) {
+        ifTrue(firstPredicate.test(type), firstRunnable);
+        ifTrue(secondPredicate.test(type), secondRunnable);
+    }
+
+    public <C, T> void ifTrue(C condition, T type, Predicate<C> firstPredicate, Consumer<T> firstConsumer, Predicate<C> secondPredicate, Consumer<T> secondConsumer) {
+        ifTrue(firstPredicate.test(condition), () -> firstConsumer.accept(type));
+        ifTrue(secondPredicate.test(condition), () -> secondConsumer.accept(type));
+    }
+
+    public <T> void ifTrue(T type, Predicate<T> firstPredicate, Runnable firstRunnable, Predicate<T> secondPredicate, Runnable secondRunnable, Predicate<T> thirdCondition, Runnable thirdRunnable) {
+        ifTrue(type, firstPredicate, firstRunnable);
+        ifTrue(type, secondPredicate, secondRunnable);
+        ifTrue(type, thirdCondition, thirdRunnable);
+    }
+
+    public <T> void ifTrue(T type, boolean condition, Runnable runnable, Predicate<T> firstPredicate, Runnable firstRunnable, Predicate<T> secondPredicate, Runnable secondRunnable) {
+        if (condition) runnable.run();
+        else {
+            ifTrue(type, firstPredicate, firstRunnable);
+            ifTrue(type, secondPredicate, secondRunnable);
+        }
     }
 
     public void ifFalse(boolean condition, Runnable runnable) {

@@ -6,7 +6,6 @@ import fr.orion.core.common.database.redis.packet.ExamplePacket;
 import fr.orion.core.common.database.redis.packet.FinePacket;
 import fr.orion.core.spigot.common.channel.ExampleChannel;
 import fr.orion.core.spigot.common.channel.FineChannel;
-import fr.orion.core.spigot.common.gui.ThreadGui;
 import fr.orion.lobby.LobbyPlugin;
 import fr.orion.lobby.common.SomeTest;
 import lombok.AllArgsConstructor;
@@ -19,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -55,6 +55,21 @@ public class TestListener implements Listener {
             event.setCancelled(true);
         }
 
+        if (event.getMessage().equalsIgnoreCase("!item")) {
+            getPlugin().getLobbyItems().setup(player);
+            event.setCancelled(true);
+        }
+
+        if (event.getMessage().equalsIgnoreCase("!eventbus")) {
+            getPlugin().getApi().getEventBus().publish(PlayerToggleSneakEvent.class, sneakEvent -> sneakEvent.getPlayer().sendMessage("Work!"));
+            event.setCancelled(true);
+        }
+
+        if (event.getMessage().equalsIgnoreCase("!eventbus unregister")) {
+            getPlugin().getApi().getEventBus().unregisterAll();
+            event.setCancelled(true);
+        }
+
         if (event.getMessage().startsWith("!action")) {
             getMap().get(player.getUniqueId()).setSupplier(() -> event.getMessage().split(" ")[1]);
             event.setCancelled(true);
@@ -65,8 +80,8 @@ public class TestListener implements Listener {
             event.setCancelled(true);
         }
 
-        if (event.getMessage().equalsIgnoreCase("!threads")) {
-            getPlugin().getApi().getGuiManager().open(player, new ThreadGui(getPlugin(), player));
+        if (event.getMessage().startsWith("!title")) {
+            getPlugin().getLobbyBoard().updateTitle(() -> event.getMessage().split(" ")[1]);
             event.setCancelled(true);
         }
 

@@ -19,6 +19,7 @@ public class OrionSpigotImpl extends OrionSpigotApi {
 
     @Override
     public void unload() {
+        getEventBus().unregisterAll();
         getDatabaseLoader().disconnect();
     }
 

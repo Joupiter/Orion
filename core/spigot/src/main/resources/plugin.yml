@@ -3,6 +3,7 @@ main: fr.orion.core.spigot.CorePlugin
 version: 1.0.0
 author: Joupi
 description: Core plugin
+load: STARTUP
 
 commands:
   bench:
