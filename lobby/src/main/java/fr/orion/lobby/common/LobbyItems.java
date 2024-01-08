@@ -24,11 +24,11 @@ public class LobbyItems {
     }
 
     public void setup(Player player) {
-        getThreadItem().giveItem(player, 4);
+        getThreadItem().giveItem(player, 0);
     }
 
     private CustomItem getThreadItem() {
-        return new CustomItemBuilder("lobby-game", new ItemBuilder(Material.BOOK_AND_QUILL).setName("&6Threads"), false, true)
+        return new CustomItemBuilder("lobby-game", new ItemBuilder(Material.BOOK).setName("&6Threads"), false, true)
                 .setOnCommonClick(event -> getPlugin().getApi().getGuiManager().open(event.getPlayer(), new ThreadGui(getPlugin(), event.getPlayer())))
                 .build();
     }

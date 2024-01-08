@@ -42,6 +42,7 @@ public class TestListener implements Listener {
             addCoins(user);
             getPlugin().getLobbyBoard().addViewer(player);
             sendActionBar(user);
+            getPlugin().getLobbyItems().setup(player);
             player.sendMessage("§aBonjour ! Vous avez §b" + user.getCoins() + " §acoins !");
         });
     }
@@ -52,11 +53,6 @@ public class TestListener implements Listener {
 
         if (event.getMessage().equalsIgnoreCase("!addcoins")) {
             getPlugin().getApi().getUserRepository().getUser(player.getUniqueId()).subscribe(this::agfgdgdfgf);
-            event.setCancelled(true);
-        }
-
-        if (event.getMessage().equalsIgnoreCase("!item")) {
-            getPlugin().getLobbyItems().setup(player);
             event.setCancelled(true);
         }
 
@@ -72,11 +68,6 @@ public class TestListener implements Listener {
 
         if (event.getMessage().startsWith("!action")) {
             getMap().get(player.getUniqueId()).setSupplier(() -> event.getMessage().split(" ")[1]);
-            event.setCancelled(true);
-        }
-
-        if (event.getMessage().startsWith("!title")) {
-            getPlugin().getLobbyBoard().updateTitle(() -> event.getMessage().split(" ")[1]);
             event.setCancelled(true);
         }
 
