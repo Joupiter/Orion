@@ -10,12 +10,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 @Getter
-public class LobbyItems {
+public class LobbyManager {
 
     private final LobbyPlugin plugin;
+    private final LobbyBoard board;
 
-    public LobbyItems(LobbyPlugin plugin) {
+    public LobbyManager(LobbyPlugin plugin) {
         this.plugin = plugin;
+        this.board = new LobbyBoard(plugin);
         this.loadItems();
     }
 
@@ -24,12 +26,13 @@ public class LobbyItems {
     }
 
     public void setup(Player player) {
+        getBoard().addViewer(player);
         getThreadItem().giveItem(player, 0);
     }
 
     private CustomItem getThreadItem() {
-        return new CustomItemBuilder("lobby-game", new ItemBuilder(Material.BOOK).setName("&6Threads"), false, true)
-                .setOnCommonClick(event -> getPlugin().getApi().getGuiManager().open(event.getPlayer(), new ThreadGui(getPlugin(), event.getPlayer())))
+        return new CustomItemBuilder("thread", new ItemBuilder(Material.BOOK).setName("&6Threads"), false, true)
+                .setOnClick(event -> getPlugin().getApi().getGuiManager().open(event.getPlayer(), new ThreadGui(getPlugin(), event.getPlayer())))
                 .build();
     }
 

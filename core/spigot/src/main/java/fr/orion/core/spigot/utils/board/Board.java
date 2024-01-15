@@ -20,14 +20,14 @@ public abstract class Board<P extends JavaPlugin> {
     private final P plugin;
 
     private Supplier<String> title;
-    private Map<Integer, String> lines;
 
+    private final ConcurrentMap<Integer, String> lines;
     private final ConcurrentMap<UUID, FastBoard> boards;
 
     public Board(P plugin, Supplier<String> title) {
         this.plugin = plugin;
         this.title = title;
-        this.lines = new HashMap<>();
+        this.lines = new ConcurrentHashMap<>();
         this.boards = new ConcurrentHashMap<>();
         this.updateBoards();
     }
@@ -42,18 +42,6 @@ public abstract class Board<P extends JavaPlugin> {
         return Optional.ofNullable(getBoards().get(uuid));
     }
 
-    public void setLines(String... lines) {
-        setLines(Arrays.asList(lines));
-    }
-
-    public void setLines(List<String> lines) {
-        setLines(SpigotUtils.coloredStringListToMap(lines));
-    }
-
-    public void setLines(Map<Integer, String> lines) {
-        this.lines = lines;
-    }
-
     public void updateTitle(Supplier<String> title) {
         setTitle(title);
         getBoards().values().forEach(fastBoard -> fastBoard.updateTitle(title.get()));
@@ -64,7 +52,10 @@ public abstract class Board<P extends JavaPlugin> {
     }
 
     public void updateLines(User user) {
-        getPlayer(user.getUuid()).ifPresent(board -> board.updateLines(SpigotUtils.colorize(getLines(user))));
+        getPlayer(user.getUuid()).ifPresent(board -> {
+            board.updateTitle(getTitle().get());
+            board.updateLines(SpigotUtils.colorize(getLines(user)));
+        });
     }
 
     public void addLine(int index, String line) {
@@ -72,7 +63,7 @@ public abstract class Board<P extends JavaPlugin> {
     }
 
     public void addLine(String line) {
-        getLines().values().add(SpigotUtils.colorize(line));
+        addLine(getLines().size() + 1, line);
     }
 
     private void updateBoards() {

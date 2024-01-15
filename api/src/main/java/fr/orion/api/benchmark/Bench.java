@@ -1,21 +1,18 @@
 package fr.orion.api.benchmark;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.function.Consumer;
 
 @Getter
-@AllArgsConstructor
+@Setter
+@RequiredArgsConstructor
 public abstract class Bench {
 
     private final String name;
-    private final long startTime;
-
-    public Bench(String name) {
-        this.name = name;
-        this.startTime = System.currentTimeMillis();
-    }
+    private long startTime;
 
     public abstract void test();
 
@@ -28,9 +25,13 @@ public abstract class Bench {
             @Override
             public void test() {
                 consumer.accept(this);
-                notifyEnd();
+                //notifyEnd();
             }
         };
+    }
+
+    public void initTimer() {
+        setStartTime(System.currentTimeMillis());
     }
 
     public void notify(String message) {

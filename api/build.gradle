@@ -1,5 +1,6 @@
 dependencies {
     compileOnly files('../libs/spigot.jar')
+    compileOnly 'com.github.ben-manes.caffeine:caffeine:3.1.8'
     compileOnly 'io.lettuce:lettuce-core:6.3.0.RELEASE'
     compileOnly 'org.mongodb:mongodb-driver-reactivestreams:4.11.1'
 }

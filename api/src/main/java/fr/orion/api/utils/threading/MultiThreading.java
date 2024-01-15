@@ -10,19 +10,30 @@ public class MultiThreading {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
-    public final ExecutorService pool = Executors.newFixedThreadPool(5, runnable -> new Thread(runnable, String.format("orion-fixed-thread-%s", counter.incrementAndGet())));
-
+    public final ExecutorService pool = Executors.newFixedThreadPool(10, runnable -> new Thread(runnable, String.format("orion-fixed-thread-%s", counter.incrementAndGet())));
     public final ExecutorService cachedPool = Executors.newCachedThreadPool(runnable ->  new Thread(runnable, String.format("orion-cached-thread-%s", counter.incrementAndGet())));
 
-    public final ScheduledExecutorService runnablePool = Executors.newScheduledThreadPool(7, runnable -> new Thread(runnable, String.format("orion-scheduled-thread-%s", counter.incrementAndGet())));
-
+    public final ScheduledExecutorService single = Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, String.format("orion-single-thread-%s", counter.incrementAndGet())));
+    public final ScheduledExecutorService runnablePool = Executors.newScheduledThreadPool(10, runnable -> new Thread(runnable, String.format("orion-scheduled-thread-%s", counter.incrementAndGet())));
 
     public ScheduledFuture<?> schedule(Runnable runnable, long initialDelay, long delay, TimeUnit unit) {
-        return runnablePool.scheduleAtFixedRate(runnable, initialDelay, delay, unit);
+        return scheduledFuture(runnablePool, runnable, initialDelay, delay, unit);
     }
 
     public ScheduledFuture<?> schedule(Runnable runnable, long initialDelay, TimeUnit unit) {
-        return runnablePool.schedule(runnable, initialDelay, unit);
+        return scheduledFuture(runnablePool, runnable, initialDelay, unit);
+    }
+
+    public ScheduledFuture<?> singleSchedule(Runnable runnable, long initialDelay, long delay, TimeUnit unit) {
+        return scheduledFuture(single, runnable, initialDelay, delay, unit);
+    }
+
+    public ScheduledFuture<?> singleSchedule(Runnable runnable, long initialDelay, TimeUnit unit) {
+        return scheduledFuture(single, runnable, initialDelay, unit);
+    }
+
+    public void runSingle(Runnable runnable) {
+        single.execute(runnable);
     }
 
     public void runAsync(Runnable runnable) {
@@ -33,11 +44,20 @@ public class MultiThreading {
         cachedPool.submit(runnable);
     }
 
-    public int getTotal() {
-        return (int) Thread.getAllStackTraces().keySet().stream().filter(thread -> thread.getName().startsWith("orion")).count();
+    private ScheduledFuture<?> scheduledFuture(ScheduledExecutorService service, Runnable runnable, long initialDelay, long delay, TimeUnit unit) {
+        return service.scheduleAtFixedRate(runnable, initialDelay, delay, unit);
     }
 
-    public void stopTask() {
+    private ScheduledFuture<?> scheduledFuture(ScheduledExecutorService service, Runnable runnable, long initialDelay, TimeUnit unit) {
+        return service.schedule(runnable, initialDelay, unit);
+    }
+
+    public int getTotal() {
+        return counter.get();
+    }
+
+    public void shutdown() {
+        single.shutdown();
         pool.shutdown();
         cachedPool.shutdown();
         runnablePool.shutdown();

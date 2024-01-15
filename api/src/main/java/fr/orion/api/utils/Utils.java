@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -65,6 +63,11 @@ public class Utils {
         if (!condition) runnable.run();
     }
 
+    @SafeVarargs
+    public static <T> List<T> mergeList(List<T>... lists) {
+        return Arrays.stream(lists).flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
     public Map<Integer, String> stringListToMap(List<String> messages) {
         return messages.stream().collect(Collectors.toMap(messages::indexOf, Function.identity()));
     }
@@ -105,19 +108,7 @@ public class Utils {
             return this;
         }
 
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public class OptionalValue<T> {
-
-        private final T value;
-
-        public static <T> OptionalValue<T> of(T optional) {
-            return new OptionalValue<>(optional);
-        }
-
-        public OptionalValue<T> consume(Consumer<T> consumer) {
+        public Value<T> optionalConsume(Consumer<T> consumer) {
             Optional.ofNullable(getValue()).ifPresent(consumer);
             return this;
         }

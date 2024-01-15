@@ -1,8 +1,6 @@
 package fr.orion.core.spigot.common.gui;
 
 import fr.orion.api.utils.threading.MultiThreading;
-import fr.orion.core.spigot.common.api.OrionSpigotApi;
-import fr.orion.core.spigot.utils.gui.Gui;
 import fr.orion.core.spigot.utils.gui.GuiButton;
 import fr.orion.core.spigot.utils.gui.PageableGui;
 import fr.orion.core.spigot.utils.item.ItemBuilder;
@@ -54,8 +52,8 @@ public class ThreadGui extends PageableGui<JavaPlugin, GuiButton> {
     private GuiButton getInformationsButton() {
         return new GuiButton(new ItemBuilder(Material.BOOK)
                 .setName("&7» &aInformations")
-                .addLore("&7▏ &eSize&7: &a" + Thread.activeCount(),
-                        "&7▏ &eOrion Size&7: &a" + MultiThreading.getTotal(),
+                .addLore("&7▏ &ePool Size&7: &a" + Thread.activeCount(),
+                        "&7▏ &eOrion Pool Size&7: &a" + MultiThreading.getTotal(),
                         "&7▏ &eHeapMemory Usage&7: &2" + (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / 1024) / 1024 + " MB",
                         "&7▏ &eNonHeapMemory Usage&7: &2" + (ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getUsed() / 1024) / 1024 + " MB",
                         "&7▏ &eThread Peak&7: &9" + ManagementFactory.getThreadMXBean().getPeakThreadCount()).build());

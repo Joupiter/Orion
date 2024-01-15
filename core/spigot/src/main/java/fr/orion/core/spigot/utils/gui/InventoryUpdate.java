@@ -87,7 +87,6 @@ public final class InventoryUpdate {
      * @param player   whose inventory will be updated.
      * @param newTitle the new title for the inventory.
      */
-    @SuppressWarnings("UnstableApiUsage")
     public static void updateInventory(Player player, String newTitle) {
         Preconditions.checkArgument(player != null, "Cannot update inventory to null player.");
         Preconditions.checkArgument(newTitle != null, "The new title can't be null.");

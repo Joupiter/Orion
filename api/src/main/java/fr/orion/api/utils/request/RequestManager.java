@@ -1,7 +1,7 @@
 package fr.orion.api.utils.request;
 
-import com.google.common.collect.ImmutableList;
 import fr.orion.api.utils.Utils;
+import fr.orion.api.utils.threading.MultiThreading;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Getter
 public abstract class RequestManager<T extends Request> {
-
-    private final static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     private final long delay;
     private final TimeUnit timeUnit;
@@ -43,10 +43,6 @@ public abstract class RequestManager<T extends Request> {
         return getRequest(sender.getUniqueId(), target.getUniqueId());
     }
 
-    public static ScheduledExecutorService getExecutorService() {
-        return executorService;
-    }
-
     public void addRequest(T request, long delay, TimeUnit timeUnit) {
         getRequests().put(request.getId(), request);
         scheduleRequest(request, delay, timeUnit);
@@ -65,7 +61,7 @@ public abstract class RequestManager<T extends Request> {
     }
 
     private void scheduleRequest(Request request, long delay, TimeUnit timeUnit) {
-        getExecutorService().schedule(() -> Utils.OptionalValue.of(getRequests().get(request.getId())).consume(this::onRequestExpire).consume(this::removeRequest), delay, timeUnit);
+        MultiThreading.singleSchedule(() -> Utils.Value.of(getRequests().get(request.getId())).consume(this::onRequestExpire).consume(this::removeRequest), delay, timeUnit);
     }
 
     private void scheduleRequest(Request request) {
@@ -84,8 +80,8 @@ public abstract class RequestManager<T extends Request> {
         getRequests().clear();
     }
 
-    public ImmutableList<T> getAllRequests(UUID uuid) {
-        return ImmutableList.<T>builder().addAll(getRequests(request -> request.getTarget().equals(uuid) || request.getSender().equals(uuid))).build();
+    public List<T> getAllRequests(UUID uuid) {
+        return getRequests(request -> request.getTarget().equals(uuid) || request.getSender().equals(uuid));
     }
 
     public List<T> getRequests(Predicate<T> predicate) {

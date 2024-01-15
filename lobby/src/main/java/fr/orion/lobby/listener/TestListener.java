@@ -1,7 +1,6 @@
 package fr.orion.lobby.listener;
 
 import fr.orion.api.user.User;
-import fr.orion.api.utils.threading.MultiThreading;
 import fr.orion.core.common.database.redis.packet.ExamplePacket;
 import fr.orion.core.common.database.redis.packet.FinePacket;
 import fr.orion.core.spigot.common.channel.ExampleChannel;
@@ -25,7 +24,6 @@ import reactor.core.scheduler.Schedulers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Getter
 @AllArgsConstructor
@@ -40,9 +38,7 @@ public class TestListener implements Listener {
 
         getPlugin().getApi().getUserRepository().getUser(player.getUniqueId()).subscribe(user -> {
             addCoins(user);
-            getPlugin().getLobbyBoard().addViewer(player);
-            sendActionBar(user);
-            getPlugin().getLobbyItems().setup(player);
+            getPlugin().getLobbyManager().setup(player);
             player.sendMessage("§aBonjour ! Vous avez §b" + user.getCoins() + " §acoins !");
         });
     }
@@ -63,16 +59,6 @@ public class TestListener implements Listener {
 
         if (event.getMessage().equalsIgnoreCase("!eventbus unregister")) {
             getPlugin().getApi().getEventBus().unregisterAll();
-            event.setCancelled(true);
-        }
-
-        if (event.getMessage().startsWith("!action")) {
-            getMap().get(player.getUniqueId()).setSupplier(() -> event.getMessage().split(" ")[1]);
-            event.setCancelled(true);
-        }
-
-        if (event.getMessage().startsWith("!title")) {
-            getPlugin().getLobbyBoard().updateTitle(() -> event.getMessage().split(" ")[1]);
             event.setCancelled(true);
         }
 
@@ -114,14 +100,6 @@ public class TestListener implements Listener {
 
     }
 
-    private void sendActionBar(User user) {
-        Player player = Bukkit.getPlayer(user.getUuid());
-        SomeTest someTest = new SomeTest(user);
-
-        getMap().putIfAbsent(player.getUniqueId(), someTest);
-        MultiThreading.schedule(() -> player.nacho().sendActionBar(someTest.getSupplier().get()), 1, 1, TimeUnit.SECONDS);
-    }
-
     private void addCoins(User user) {
         user.setCoins(user.getCoins() + 1);
     }
@@ -140,7 +118,7 @@ public class TestListener implements Listener {
         Player player = event.getPlayer();
 
         getMap().remove(player.getUniqueId());
-        getPlugin().getLobbyBoard().removeViewer(player);
+        getPlugin().getLobbyManager().getBoard().removeViewer(player);
     }
 
 }

@@ -22,7 +22,7 @@ public class CustomItemBuilder {
         this(new CustomItem(name, itemBuilder.build(), droppable, commonClick));
     }
 
-    public CustomItemBuilder setOnCommonClick(Consumer<PlayerInteractEvent> consumer) {
+    public CustomItemBuilder setOnClick(Consumer<PlayerInteractEvent> consumer) {
         getCustomItem().setCommonClickConsumer(consumer);
         return this;
     }
