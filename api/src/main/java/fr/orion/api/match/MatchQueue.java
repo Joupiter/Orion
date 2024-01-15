@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class MatchQueue {
 
     private final String name;
-    private final Deque<UUID> deque;
+    private final Deque<UUID> queue;
 
     private MatchQueue(String name) {
         this.name = name;
-        this.deque = new ConcurrentLinkedDeque<>();
+        this.queue = new ConcurrentLinkedDeque<>();
     }
 
 }
