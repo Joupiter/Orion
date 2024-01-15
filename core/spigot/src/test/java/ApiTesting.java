@@ -16,7 +16,7 @@ public class ApiTesting {
 
     @Test
     public void test() {
-        OrionApi.setProvider(new OrionImpl());
+        OrionApi.setProvider(new OrionTestImpl());
         UUID uuid = UUID.randomUUID();
         User user = new User(uuid, 0);
 

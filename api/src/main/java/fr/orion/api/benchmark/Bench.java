@@ -25,7 +25,6 @@ public abstract class Bench {
             @Override
             public void test() {
                 consumer.accept(this);
-                //notifyEnd();
             }
         };
     }

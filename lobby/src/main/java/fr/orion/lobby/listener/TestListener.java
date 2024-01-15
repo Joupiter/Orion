@@ -4,9 +4,7 @@ import fr.orion.api.user.User;
 import fr.orion.core.common.database.redis.packet.ExamplePacket;
 import fr.orion.core.common.database.redis.packet.FinePacket;
 import fr.orion.core.spigot.common.channel.ExampleChannel;
-import fr.orion.core.spigot.common.channel.FineChannel;
 import fr.orion.lobby.LobbyPlugin;
-import fr.orion.lobby.common.SomeTest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bson.Document;
@@ -21,16 +19,11 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 @Getter
 @AllArgsConstructor
 public class TestListener implements Listener {
 
     private final LobbyPlugin plugin;
-    private final Map<UUID, SomeTest> map = new HashMap<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -75,11 +68,6 @@ public class TestListener implements Listener {
             event.setCancelled(true);
         }
 
-        if (event.getMessage().equalsIgnoreCase("!sub2")) {
-            getPlugin().getApi().getDatabaseLoader().getRedisMessenger().addChannel(new FineChannel());
-            event.setCancelled(true);
-        }
-
         if (event.getMessage().equalsIgnoreCase("!pub")) {
             getPlugin().getApi().getDatabaseLoader().getRedisMessenger()
                     .publish("example", new ExamplePacket("Fine"));
@@ -93,7 +81,8 @@ public class TestListener implements Listener {
 
         if (event.getMessage().equalsIgnoreCase("!redistest")) {
             getPlugin().getApi().getDatabaseLoader().getRedisDatabase().getReactiveCommands()
-                    .set("test", "work").doOnNext(s -> System.out.println("[Redis] Operate on " + Thread.currentThread().getName()))
+                    .set("test", "work")
+                    .doOnNext(s -> System.out.println("[Redis] Operate on " + Thread.currentThread().getName()))
                     .subscribe();
             event.setCancelled(true);
         }
@@ -117,7 +106,6 @@ public class TestListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        getMap().remove(player.getUniqueId());
         getPlugin().getLobbyManager().getBoard().removeViewer(player);
     }
 

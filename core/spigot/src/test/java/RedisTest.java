@@ -17,7 +17,7 @@ public class RedisTest {
 
     @Test
     public void test() {
-        OrionApi.setProvider(new OrionImpl());
+        OrionApi.setProvider(new OrionTestImpl());
         OrionApi.getProvider().getDatabaseLoader().connect();
 
         System.out.println("----------------------");

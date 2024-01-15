@@ -8,7 +8,7 @@ import fr.orion.core.common.database.DatabaseManager;
 import fr.orion.core.common.rank.InMemoryRankManager;
 import fr.orion.core.common.user.InMemoryUserManager;
 
-public class OrionImpl implements OrionApi {
+public class OrionTestImpl implements OrionApi {
 
     private final DatabaseLoader databaseLoader;
 
@@ -17,7 +17,7 @@ public class OrionImpl implements OrionApi {
 
     private final BenchHandler benchHandler;
 
-    public OrionImpl() {
+    public OrionTestImpl() {
         this.databaseLoader = new DatabaseManager();
         this.userRepository = new InMemoryUserManager();
         this.rankRepository = new InMemoryRankManager();

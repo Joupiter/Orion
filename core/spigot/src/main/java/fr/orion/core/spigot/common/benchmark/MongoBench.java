@@ -48,17 +48,11 @@ public class MongoBench extends BenchCategory {
                             .getDatabase()
                             .getCollection("example").find(Filters.exists("id")))
                     .take(10)
+                    .publishOn(Schedulers.boundedElastic())
                     .doOnNext(document -> System.out.println("next" + document.get("id")))
                     .toStream()
                     .collect(Collectors.toList())
                     .forEach(document -> System.out.println(">> " + document.toJson()));
-
-            /*Flux.range(1, 2000)
-                    .log()
-                    .doOnNext(this::get)
-                    .publishOn(Schedulers.boundedElastic())
-                    .doOnComplete(bench::notifyEnd)
-                    .subscribe();*/
         });
     }
 
@@ -81,7 +75,7 @@ public class MongoBench extends BenchCategory {
                         .getDatabase()
                         .getCollection("example")
                         .find(Filters.eq("id", i)).first())
-                .subscribeOn(Schedulers.parallel())
+                .publishOn(Schedulers.parallel())
                 .subscribe(document -> Bukkit.getPlayer("JoupiterHD").sendMessage("> " + document.get("id")));
     }
 

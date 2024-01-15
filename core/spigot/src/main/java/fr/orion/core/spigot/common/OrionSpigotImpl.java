@@ -16,6 +16,7 @@ public class OrionSpigotImpl extends OrionSpigotApi {
     @Override
     public void load() {
         getDatabaseLoader().connect();
+        // TODO: getBenchHandler().addCategories(String package);
         getBenchHandler().addCategories(new RedisBench(), new ReactorBench(), new MongoBench());
     }
 
