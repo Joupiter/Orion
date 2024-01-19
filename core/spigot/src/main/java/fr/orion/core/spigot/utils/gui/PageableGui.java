@@ -13,11 +13,15 @@ public abstract class PageableGui<P extends JavaPlugin, E> extends Gui<P> {
     private final Pagination<E> pagination;
     @Setter private Pagination<E>.Page page;
 
-    protected PageableGui(P plugin, String inventoryName, int rows, int maxItems) {
-        super(plugin, inventoryName, rows);
+    public PageableGui(P plugin, String inventoryName, boolean updatable, int rows, int maxItems) {
+        super(plugin, inventoryName, rows, updatable);
         this.maxItems = maxItems;
         this.pagination = new Pagination<>(getMaxItems());
         this.page = pagination.getPage(1);
+    }
+
+    public PageableGui(P plugin, String inventoryName, int rows, int maxItems) {
+        this(plugin, inventoryName, false, rows, maxItems);
     }
 
     public abstract GuiButton nextPageButton();

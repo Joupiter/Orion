@@ -13,10 +13,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Getter
 public class MongoBench extends BenchCategory {
@@ -101,23 +99,17 @@ public class MongoBench extends BenchCategory {
     public static class SSS {
 
         private final int id;
-        private final Map<String, AAA> map;
+        private final Map<Integer, AAA> map;
 
         public SSS(int id) {
             this.id = id;
-            this.map = generate();
+            this.map = Flux.range(0, 100).collectMap(i -> i, k -> AAA.RANDOM_STRING).block();
         }
 
         public Document toDoc() {
             return new Document()
                     .append("id", getId())
                     .append("map", getMap());
-        }
-
-        private Map<String, AAA> generate() {
-            Map<String, AAA> map = new HashMap<>();
-            IntStream.rangeClosed(0, 500).forEach(i -> map.put(String.valueOf(i), AAA.RANDOM_STRING));
-            return map;
         }
 
     }

@@ -1,6 +1,7 @@
 package fr.orion.core.spigot.utils.gui;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -13,8 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -26,7 +26,7 @@ public class GuiManager implements Listener {
     public GuiManager(JavaPlugin plugin) {
         this.guis = new ConcurrentHashMap<>();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        //MultiThreading.runnablePool.scheduleAtFixedRate(this::updateButtons, 1, 1, TimeUnit.SECONDS);
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this::updateButtons, 20, 20);
     }
 
     public Optional<Gui<?>> getGui(UUID uuid) {
@@ -38,7 +38,7 @@ public class GuiManager implements Listener {
     }
 
     private void updateButtons() {
-        getGuis().values().forEach(Gui::onUpdate);
+        getGuis().values().stream().filter(Gui::isUpdatable).forEach(Gui::onUpdate);
     }
 
     public void open(Player player, Gui<?> gui) {

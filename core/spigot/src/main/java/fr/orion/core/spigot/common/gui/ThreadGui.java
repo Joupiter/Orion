@@ -19,7 +19,7 @@ public class ThreadGui extends PageableGui<JavaPlugin, GuiButton> {
     private final Player player;
 
     public ThreadGui(JavaPlugin plugin, Player player) {
-        super(plugin, "&6Threads", 5, 36);
+        super(plugin, "&6Threads", true, 5, 36);
         this.player = player;
         Thread.getAllStackTraces().keySet().forEach(this::addThreadButton);
     }
@@ -34,6 +34,11 @@ public class ThreadGui extends PageableGui<JavaPlugin, GuiButton> {
         setItem(39, previousPageButton());
         setItem(40, getInformationsButton());
         setItem(41, nextPageButton());
+    }
+
+    @Override
+    public void onUpdate() {
+        setItem(40, getInformationsButton());
     }
 
     private void addThreadButton(Thread thread) {

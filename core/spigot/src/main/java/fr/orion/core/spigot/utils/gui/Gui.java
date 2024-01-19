@@ -26,20 +26,26 @@ public abstract class Gui<P extends JavaPlugin> {
 
     private final P plugin;
 
-    private Inventory inventory;
     private final String inventoryName;
     private final int rows;
-    private Consumer<InventoryCloseEvent> closeConsumer;
-
     private final ConcurrentMap<Integer, GuiButton> buttons;
 
-    public Gui(P plugin, String inventoryName, int rows) {
+    private Inventory inventory;
+    private Consumer<InventoryCloseEvent> closeConsumer;
+    private boolean updatable;
+
+    public Gui(P plugin, String inventoryName, int rows, boolean updatable) {
         this.plugin = plugin;
         this.inventoryName = inventoryName;
         this.rows = rows;
         this.buttons = new ConcurrentHashMap<>();
         this.inventory = Bukkit.createInventory(null, rows * 9, ChatColor.translateAlternateColorCodes('&', inventoryName));
+        this.updatable = updatable;
         defaultLoad();
+    }
+
+    public Gui(P plugin, String inventoryName, int rows) {
+        this(plugin, inventoryName, rows, false);
     }
 
     public abstract void setup();
