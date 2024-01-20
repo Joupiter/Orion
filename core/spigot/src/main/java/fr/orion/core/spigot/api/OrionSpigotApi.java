@@ -1,4 +1,4 @@
-package fr.orion.core.spigot.common.api;
+package fr.orion.core.spigot.api;
 
 import fr.orion.api.OrionApi;
 import fr.orion.api.benchmark.BenchHandler;

@@ -1,3 +1,5 @@
+package api;
+
 import fr.orion.api.OrionApi;
 import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
@@ -12,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-public class ApiTesting {
+public class ApiTest {
 
     @Test
     public void test() {

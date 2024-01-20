@@ -1,7 +1,7 @@
 package fr.orion.core.spigot.common;
 
 import fr.orion.api.utils.threading.MultiThreading;
-import fr.orion.core.spigot.common.api.OrionSpigotApi;
+import fr.orion.core.spigot.api.OrionSpigotApi;
 import fr.orion.core.spigot.common.benchmark.MongoBench;
 import fr.orion.core.spigot.common.benchmark.ReactorBench;
 import fr.orion.core.spigot.common.benchmark.RedisBench;

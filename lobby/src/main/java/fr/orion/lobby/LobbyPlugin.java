@@ -3,7 +3,7 @@ package fr.orion.lobby;
 import fr.orion.api.OrionApi;
 import fr.orion.api.database.redis.pubsub.RedisChannel;
 import fr.orion.core.common.database.redis.packet.FinePacket;
-import fr.orion.core.spigot.common.api.OrionSpigotApi;
+import fr.orion.core.spigot.api.OrionSpigotApi;
 import fr.orion.lobby.common.LobbyManager;
 import fr.orion.lobby.listener.TestListener;
 import lombok.Getter;

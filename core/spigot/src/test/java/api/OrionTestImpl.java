@@ -1,3 +1,5 @@
+package api;
+
 import fr.orion.api.OrionApi;
 import fr.orion.api.benchmark.BenchHandler;
 import fr.orion.api.database.DatabaseLoader;
