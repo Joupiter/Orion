@@ -349,4 +349,5 @@ public final class InventoryUpdate {
             return inventoryTypesNames;
         }
     }
+
 }

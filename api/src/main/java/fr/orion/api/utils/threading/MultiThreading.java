@@ -57,9 +57,9 @@ public class MultiThreading {
     }
 
     public void shutdown() {
-        single.shutdown();
         pool.shutdown();
         cachedPool.shutdown();
+        single.shutdown();
         runnablePool.shutdown();
     }
 

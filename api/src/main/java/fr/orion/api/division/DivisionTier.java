@@ -4,6 +4,6 @@ public enum DivisionTier {
 
     I,
     II,
-    III;
+    III
 
 }
