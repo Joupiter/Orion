@@ -1,6 +1,6 @@
 package currency;
 
-import fr.orion.api.currency.money.IntegerCurrency;
+import fr.orion.api.economy.currency.IntegerCurrency;
 
 import java.util.UUID;
 

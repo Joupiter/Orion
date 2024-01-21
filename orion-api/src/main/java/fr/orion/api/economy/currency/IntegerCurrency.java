@@ -1,6 +1,6 @@
-package fr.orion.api.currency.money;
+package fr.orion.api.economy.currency;
 
-import fr.orion.api.currency.Currency;
+import fr.orion.api.economy.Currency;
 
 public abstract class IntegerCurrency extends Currency<Integer> {
 

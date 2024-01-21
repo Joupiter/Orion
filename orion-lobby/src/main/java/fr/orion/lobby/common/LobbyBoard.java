@@ -16,7 +16,7 @@ public class LobbyBoard extends Board<LobbyPlugin> {
     public List<String> getLines(User user) {
         return List.of(
                 "",
-                "&eCoins&7: &b" + user.getCoins(),
+                "&eCoins&7: &b" + user.getCoins().getAmount(),
                 "");
     }
 

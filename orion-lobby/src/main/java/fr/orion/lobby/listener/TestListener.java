@@ -90,7 +90,7 @@ public class TestListener implements Listener {
     }
 
     private void addCoins(User user) {
-        user.setCoins(user.getCoins() + 1);
+        user.getCoins().add(1);
     }
 
     private void sendFinePacket(User user) {

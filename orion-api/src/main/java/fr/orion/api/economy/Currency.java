@@ -1,4 +1,4 @@
-package fr.orion.api.currency;
+package fr.orion.api.economy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

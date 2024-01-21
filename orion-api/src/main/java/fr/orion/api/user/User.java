@@ -1,19 +1,13 @@
 package fr.orion.api.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import fr.orion.api.economy.currency.IntegerCurrency;
 
 import java.util.UUID;
 
-@Getter
-@ToString
-@AllArgsConstructor
-public class User {
+public interface User {
 
-    private final UUID uuid;
+    UUID getUuid();
 
-    @Setter private int coins;
+    IntegerCurrency getCoins();
 
 }

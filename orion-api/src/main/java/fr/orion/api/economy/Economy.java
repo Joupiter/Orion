@@ -1,4 +1,4 @@
-package fr.orion.api.currency;
+package fr.orion.api.economy;
 
 public interface Economy<N extends Number> {
 

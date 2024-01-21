@@ -1,9 +1,7 @@
-package currency;
+package fr.orion.core.common.currency;
 
 import fr.orion.api.economy.currency.IntegerCurrency;
-import lombok.Getter;
 
-@Getter
 public class Coins extends IntegerCurrency {
 
     public Coins() {
