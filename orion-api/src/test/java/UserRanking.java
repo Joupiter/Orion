@@ -39,11 +39,6 @@ public class UserRanking implements Ranking {
     }
 
     @Override
-    public double getCombinedMmr() {
-        return Operator.ADD.apply(getDivision().getBaseMmr(), getMmr());
-    }
-
-    @Override
     public void setDivision(Division division) {
         this.division = division;
     }

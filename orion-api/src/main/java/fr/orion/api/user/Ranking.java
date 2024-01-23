@@ -2,6 +2,7 @@ package fr.orion.api.user;
 
 import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
+import fr.orion.api.utils.math.Operator;
 
 public interface Ranking {
 
@@ -20,7 +21,9 @@ public interface Ranking {
                            (USERS_MMR) = SUM / NUMBER_OF_USERS = AVERAGE
                         */
 
-    double getCombinedMmr();
+    default double getCombinedMmr() {
+        return Operator.ADD.apply(getDivision().getBaseMmr(), getMmr());
+    }
 
     default Division getEstimatedDivision() {
         return Division.estimateDivision(getMmr());

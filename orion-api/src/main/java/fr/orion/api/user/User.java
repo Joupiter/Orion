@@ -15,7 +15,7 @@ public interface User {
         throw new NoSuchElementException("Need to be implemented");
     }
 
-    default Session getUserSession() {
+    default Session getSession() {
         throw new NoSuchElementException("Need to be implemented");
     }
 
