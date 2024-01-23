@@ -2,7 +2,6 @@ package api;
 
 import fr.orion.api.OrionApi;
 import fr.orion.api.division.Division;
-import fr.orion.api.division.DivisionTier;
 import fr.orion.api.rank.Rank;
 import fr.orion.api.user.User;
 import fr.orion.api.utils.StopWatch;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -54,9 +52,7 @@ public class ApiTest {
         OrionApi.getProvider().getRankRepository().getRanks().subscribe(rank -> rank.sendInformation(logger));
 
         logger.info("-------------------------");
-        List<Division> divisions = List.of(new Division("Challenger", Set.of(DivisionTier.I)), new Division("Bronze", Set.of(DivisionTier.values())));
-        Flux<Division> flux = Flux.fromIterable(divisions);
-
+        Flux<Division> flux = Flux.fromIterable(Division.getDivisions());
         flux.subscribe(System.out::println);
         logger.info("-------------------------");
         stopWatch.stopAndLog();

@@ -11,7 +11,11 @@ public interface User {
 
     IntegerCurrency getCoins();
 
-    default UserRanking getRanking() {
+    default Ranking getRanking() {
+        throw new NoSuchElementException("Need to be implemented");
+    }
+
+    default Session getUserSession() {
         throw new NoSuchElementException("Need to be implemented");
     }
 

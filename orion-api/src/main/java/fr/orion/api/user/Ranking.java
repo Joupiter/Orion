@@ -3,7 +3,7 @@ package fr.orion.api.user;
 import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
 
-public interface UserRanking {
+public interface Ranking {
 
     Division getDivision();
     DivisionTier getTier();
@@ -19,4 +19,19 @@ public interface UserRanking {
                            (1763 + 1710 + 1690 + 1597) = 6760 / 4 = 1690
                            (USERS_MMR) = SUM / NUMBER_OF_USERS = AVERAGE
                         */
+
+    double getCombinedMmr();
+
+    default Division getEstimatedDivision() {
+        return Division.estimateDivision(getMmr());
+    }
+
+    void setDivision(Division division);
+
+    void setTier(DivisionTier tier);
+
+    void setElo(int elo);
+
+    void setMmr(double mmr);
+
 }
