@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -30,7 +30,7 @@ public class MongoBench extends BenchCategory {
 
     private Bench getFirstTest() {
         return Bench.newBench("test1", bench -> {
-            bench.initTimer();
+            bench.getStopWatch().start();
 
             Flux.range(1, 8).log().doOnNext(this::generate).doOnComplete(bench::notifyEnd).subscribe();
             Flux.range(1, 8).log().doOnNext(this::get).doOnComplete(bench::notifyEnd).subscribe();
@@ -39,7 +39,7 @@ public class MongoBench extends BenchCategory {
 
     private Bench getSecondTest() {
         return Bench.newBench("test2", bench -> {
-            bench.initTimer();
+            bench.getStopWatch().start();
 
             Flux.from(OrionApi.getProvider().getDatabaseLoader()
                             .getMongoDatabase()
@@ -48,6 +48,7 @@ public class MongoBench extends BenchCategory {
                     .take(10)
                     .publishOn(Schedulers.boundedElastic())
                     .doOnNext(document -> System.out.println("next" + document.get("id")))
+                    .doOnComplete(bench::notifyEnd)
                     .toStream()
                     .collect(Collectors.toList())
                     .forEach(document -> System.out.println(">> " + document.toJson()));
@@ -56,7 +57,7 @@ public class MongoBench extends BenchCategory {
 
     private Bench getThirdTest() {
         return Bench.newBench("test3", bench -> {
-            bench.initTimer();
+            bench.getStopWatch().start();
 
             Flux.range(1, 2000)
                     .log()
@@ -99,17 +100,17 @@ public class MongoBench extends BenchCategory {
     public static class SSS {
 
         private final int id;
-        private final Map<Integer, AAA> map;
+        private final List<AAA> list;
 
         public SSS(int id) {
             this.id = id;
-            this.map = Flux.range(0, 100).collectMap(i -> i, k -> AAA.RANDOM_STRING).block();
+            this.list = Flux.range(0, 100).map(i -> AAA.RANDOM_STRING).collectList().block();
         }
 
         public Document toDoc() {
             return new Document()
                     .append("id", getId())
-                    .append("map", getMap());
+                    .append("list", getList());
         }
 
     }

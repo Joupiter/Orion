@@ -4,8 +4,12 @@ import fr.orion.api.economy.currency.IntegerCurrency;
 
 public class Coins extends IntegerCurrency {
 
+    public Coins(int amount) {
+        super("Coins", '⛃', amount);
+    }
+
     public Coins() {
-        super("Coins", '⛃', 0);
+        this(0);
     }
 
 }

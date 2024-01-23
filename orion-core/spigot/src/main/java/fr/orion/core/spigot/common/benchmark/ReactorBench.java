@@ -18,7 +18,7 @@ public class ReactorBench extends BenchCategory {
 
     private Bench getFirstTest() {
         return Bench.newBench("test1", bench -> {
-            bench.initTimer();
+            bench.getStopWatch().start();
 
             Flux.range(1, 1000000)
                     .flatMap(integer -> Flux.just(getThreadNameFormatted() + "#" + integer))

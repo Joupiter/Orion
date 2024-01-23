@@ -1,18 +1,26 @@
 package fr.orion.api.benchmark;
 
+import fr.orion.api.utils.StopWatch;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public abstract class Bench {
 
+    static Logger logger = LoggerFactory.getLogger(Bench.class);
+
     private final String name;
-    private long startTime;
+    private final StopWatch stopWatch;
+
+    public Bench(String name) {
+        this.name = name;
+        this.stopWatch = new StopWatch();
+    }
 
     public abstract void test();
 
@@ -29,20 +37,13 @@ public abstract class Bench {
         };
     }
 
-    public void initTimer() {
-        setStartTime(System.currentTimeMillis());
-    }
-
     public void notify(String message) {
-        System.out.println("[Benchmark] (" + getName() + ") : " + message);
+        logger.info("[Benchmark] ({}) : {}", getName(), message);
     }
 
     public void notifyEnd() {
-        notify("END IN " + getEndTime());
-    }
-
-    public long getEndTime() {
-        return System.currentTimeMillis() - getStartTime();
+        getStopWatch().stop();
+        getStopWatch().log("[Benchmark] (" + getName() + ") :");
     }
 
 }

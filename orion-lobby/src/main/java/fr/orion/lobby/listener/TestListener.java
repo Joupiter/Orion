@@ -32,7 +32,7 @@ public class TestListener implements Listener {
         getPlugin().getApi().getUserRepository().getUser(player.getUniqueId()).subscribe(user -> {
             addCoins(user);
             getPlugin().getLobbyManager().setup(player);
-            player.sendMessage("§aBonjour ! Vous avez §b" + user.getCoins() + " §acoins !");
+            player.sendMessage("§aBonjour ! Vous avez §b" + user.getCoins().getAmount() + " §acoins !");
         });
     }
 
@@ -99,7 +99,7 @@ public class TestListener implements Listener {
 
     private void agfgdgdfgf(User user) {
         addCoins(user);
-        Bukkit.getPlayer(user.getUuid()).sendMessage("§7[§aOrion§7] §eNouveau solde §b" + user.getCoins());
+        Bukkit.getPlayer(user.getUuid()).sendMessage("§7[§aOrion§7] §eNouveau solde §b" + user.getCoins().getAmount());
     }
 
     @EventHandler

@@ -1,26 +1,32 @@
 package fr.orion.api.rank;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import org.slf4j.Logger;
 
-import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 
-@Getter
-@ToString
-@AllArgsConstructor
-public class Rank {
+public interface Rank {
 
-    private String name, prefix;
+    String getName();
 
-    private int power;
-    private boolean defaultRank;
+    String getPrefix();
 
-    private List<String> permissions;
+    int getPower();
 
-    public boolean hasPermission(String permission) {
-        return getPermissions().stream()
-                .anyMatch(permission::equalsIgnoreCase);
+    boolean isDefaultRank();
+
+    Set<String> getPermissions();
+
+    default boolean hasPermission(String permission) {
+        return getPermissions().contains(permission);
+    }
+
+    default Predicate<String> hasPermissionPredicate() {
+        return getPermissions()::contains;
+    }
+
+    default void sendInformation(Logger logger) {
+        logger.info("Rank: {} | Prefix: {} | Power: {} | isDefault: {} | Permissions: {}", getName(), getPrefix(), getPower(), isDefaultRank(), String.join(",", getPermissions()));
     }
 
 }

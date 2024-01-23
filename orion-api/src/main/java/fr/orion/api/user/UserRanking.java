@@ -2,18 +2,14 @@ package fr.orion.api.user;
 
 import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-@Getter
-@AllArgsConstructor
-public class UserRanking {
+public interface UserRanking {
 
-    private Division division;
-    private DivisionTier tier;
+    Division getDivision();
+    DivisionTier getTier();
 
-    private int elo;
-    private double mmr; /* DIVISION_BASE_MMR + USER_MMR = MMR
+    int getElo();
+    double getMmr(); /* DIVISION_BASE_MMR + USER_MMR = MMR
                            1200 + 563 = 1763 (Affect elo point gained)
                            ex: 1200 = GOLD III, 1700 (PLAT I) user -> user estimated rank is PLAT I
                            when lost: -17 elo point and -0.9642654566 mmr (PLAT_I_MMR / USER_MMR)
@@ -23,5 +19,4 @@ public class UserRanking {
                            (1763 + 1710 + 1690 + 1597) = 6760 / 4 = 1690
                            (USERS_MMR) = SUM / NUMBER_OF_USERS = AVERAGE
                         */
-
 }

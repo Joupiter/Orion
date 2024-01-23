@@ -5,7 +5,12 @@ import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
 import fr.orion.api.rank.Rank;
 import fr.orion.api.user.User;
+import fr.orion.api.utils.StopWatch;
+import fr.orion.core.common.rank.OrionRank;
+import fr.orion.core.common.user.OrionUser;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.util.Collections;
@@ -16,43 +21,49 @@ import java.util.stream.IntStream;
 
 public class ApiTest {
 
+    static Logger logger = LoggerFactory.getLogger(ApiTest.class);
+
     @Test
     public void test() {
+        StopWatch stopWatch = new StopWatch(true);
+
         OrionApi.setProvider(new OrionTestImpl());
         UUID uuid = UUID.randomUUID();
-        User user = new User(uuid, 0);
+        User user = new OrionUser(uuid);
 
-        Rank defaultRank = new Rank("Joueur", "&7Joueur", 0, true, Collections.emptyList());
-        Rank adminRank = new Rank("Admin", "&cAdmin", 99, true, List.of("orion.*"));
+        Rank defaultRank = new OrionRank("Joueur", "&7Joueur", 0, true, Collections.emptySet());
+        Rank adminRank = new OrionRank("Admin", "&cAdmin", 99, true, Set.of("orion.*"));
 
-        System.out.println("-------------------------");
+
+        logger.info("-------------------------");
 
         IntStream.rangeClosed(0, 9999)
-                .forEach(value -> OrionApi.getProvider().getUserRepository().saveUser(new User(UUID.randomUUID(), 0)));
+                .forEach(value -> OrionApi.getProvider().getUserRepository().saveUser(new OrionUser(UUID.randomUUID())));
 
         OrionApi.getProvider().getUserRepository().saveUser(user);
-        OrionApi.getProvider().getUserRepository().getUsers().subscribe(System.out::println);
-        System.out.println("-------------------------");
+        OrionApi.getProvider().getUserRepository().getUsers().map(User::toString).subscribe(logger::info);
+        logger.info("-------------------------");
         OrionApi.getProvider().getUserRepository().getUser(uuid).subscribe(this::addCoins);
         OrionApi.getProvider().getUserRepository().deleteUser(user);
-        OrionApi.getProvider().getUserRepository().getUser(uuid).doOnError(Throwable::printStackTrace).subscribe(System.out::println);
-        System.out.println("-------------------------");
+        OrionApi.getProvider().getUserRepository().getUser(uuid).doOnError(Throwable::printStackTrace).map(User::toString).subscribe(logger::info);
+        logger.info("-------------------------");
 
         OrionApi.getProvider().getRankRepository().addRank(defaultRank);
         OrionApi.getProvider().getRankRepository().addRank(adminRank);
 
-        OrionApi.getProvider().getRankRepository().getRanks().subscribe(System.out::println);
+        OrionApi.getProvider().getRankRepository().getRanks().subscribe(rank -> rank.sendInformation(logger));
 
-        System.out.println("-------------------------");
+        logger.info("-------------------------");
         List<Division> divisions = List.of(new Division("Challenger", Set.of(DivisionTier.I)), new Division("Bronze", Set.of(DivisionTier.values())));
         Flux<Division> flux = Flux.fromIterable(divisions);
 
         flux.subscribe(System.out::println);
-        System.out.println("-------------------------");
+        logger.info("-------------------------");
+        stopWatch.stopAndLog();
     }
 
     public void addCoins(User user) {
-        user.setCoins(user.getCoins() + 1);
+        user.getCoins().add(1);
         System.out.println(user);
     }
 

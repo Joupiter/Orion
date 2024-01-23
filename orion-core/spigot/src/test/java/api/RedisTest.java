@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.orion.api.OrionApi;
 import fr.orion.api.user.User;
+import fr.orion.core.common.currency.Coins;
+import fr.orion.core.common.user.OrionUser;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -15,7 +17,7 @@ public class RedisTest {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private final UUID uuid = UUID.randomUUID();
-    private final User user = new User(uuid, 1555);
+    private final User user = new OrionUser(uuid, new Coins(1555));
 
     @Test
     public void test() {
