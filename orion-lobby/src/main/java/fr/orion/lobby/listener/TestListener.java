@@ -30,9 +30,9 @@ public class TestListener implements Listener {
         Player player = event.getPlayer();
 
         getPlugin().getApi().getUserRepository().getUser(player.getUniqueId()).subscribe(user -> {
-            //addCoins(user);
+            addCoins(user);
             getPlugin().getLobbyManager().setup(player);
-            //player.sendMessage("§aBonjour ! Vous avez §b" + user.getCoins().getAmount() + " §acoins !");
+            player.sendMessage("§aBonjour ! Vous avez §b" + user.getCoins().getAmount() + " §acoins !");
         });
     }
 
@@ -89,17 +89,17 @@ public class TestListener implements Listener {
 
     }
 
-    /*private void addCoins(User user) {
+    private void addCoins(User user) {
         user.getCoins().add(1);
-    }*/
+    }
 
     private void sendFinePacket(User user) {
         getPlugin().getApi().getDatabaseLoader().getRedisMessenger().publish("fine", new FinePacket(user));
     }
 
     private void agfgdgdfgf(User user) {
-        //addCoins(user);
-        Bukkit.getPlayer(user.getUuid()).sendMessage("§7[§aOrion§7] §eNouveau solde §b" + 0/*user.getCoins().getAmount()*/);
+        addCoins(user);
+        Bukkit.getPlayer(user.getUuid()).sendMessage("§7[§aOrion§7] §eNouveau solde §b" + user.getCoins().getAmount());
     }
 
     @EventHandler

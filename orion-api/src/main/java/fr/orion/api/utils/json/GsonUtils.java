@@ -2,8 +2,6 @@ package fr.orion.api.utils.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.orion.api.economy.Currency;
-import fr.orion.api.economy.CurrencyFactory;
 import fr.orion.api.economy.currency.DoubleCurrency;
 import fr.orion.api.economy.currency.IntegerCurrency;
 import fr.orion.api.utils.json.adapter.CurrencyAdapter;
