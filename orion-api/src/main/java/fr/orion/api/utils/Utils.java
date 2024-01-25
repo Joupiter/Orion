@@ -1,5 +1,6 @@
 package fr.orion.api.utils;
 
+import io.github.classgraph.ClassInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -70,6 +71,19 @@ public class Utils {
 
     public Map<Integer, String> stringListToMap(List<String> messages) {
         return messages.stream().collect(Collectors.toMap(messages::indexOf, Function.identity()));
+    }
+
+    public Class<?> getClassFromClassInfo(ClassInfo classInfo) {
+        return getClassFromName(classInfo.getName());
+    }
+
+    public Class<?> getClassFromName(String name) {
+        try {
+            return Class.forName(name);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
     }
 
     @Getter

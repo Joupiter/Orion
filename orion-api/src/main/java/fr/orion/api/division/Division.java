@@ -3,10 +3,7 @@ package fr.orion.api.division;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -23,7 +20,8 @@ public enum Division {
 
     GOLD ("Gold", DivisionTier.getTiers(), 1350),
     SILVER ("Silver", DivisionTier.getTiers(), 1000),
-    BRONZE ("Bronze", DivisionTier.getTiers(), 0);
+    BRONZE ("Bronze", DivisionTier.getTiers(), 0),
+    UNRANKED ("Unranked", Collections.emptySet(), 0);
 
     private final String name;
     private final Set<DivisionTier> tier;

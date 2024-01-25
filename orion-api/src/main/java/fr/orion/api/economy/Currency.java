@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public abstract class Currency<N extends Number> implements Economy<N> {
 
-    private final String name;
-    private final char symbol;
+    private String name;
+    private String symbol;
 
     private N amount;
 

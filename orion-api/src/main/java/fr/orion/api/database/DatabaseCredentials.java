@@ -15,6 +15,7 @@ public class DatabaseCredentials {
         return new DatabaseCredentialsBuilder();
     }
 
+    @Getter(value = AccessLevel.PRIVATE)
     public static class DatabaseCredentialsBuilder {
 
         private final DatabaseCredentials credentials;
@@ -24,37 +25,37 @@ public class DatabaseCredentials {
         }
 
         public DatabaseCredentialsBuilder setUrl(String url) {
-            credentials.setUrl(url);
+            getCredentials().setUrl(url);
             return this;
         }
 
         public DatabaseCredentialsBuilder setHost(String host) {
-            credentials.setHost(host);
+            getCredentials().setHost(host);
             return this;
         }
 
         public DatabaseCredentialsBuilder setUsername(String username) {
-            credentials.setUsername(username);
+            getCredentials().setUsername(username);
             return this;
         }
 
         public DatabaseCredentialsBuilder setPassword(String password) {
-            credentials.setPassword(password);
+            getCredentials().setPassword(password);
             return this;
         }
 
         public DatabaseCredentialsBuilder setDatabaseName(String databaseName) {
-            credentials.setDatabaseName(databaseName);
+            getCredentials().setDatabaseName(databaseName);
             return this;
         }
 
         public DatabaseCredentialsBuilder setPort(int port) {
-            credentials.setPort(port);
+            getCredentials().setPort(port);
             return this;
         }
 
         public DatabaseCredentials build() {
-            return credentials;
+            return getCredentials();
         }
 
     }

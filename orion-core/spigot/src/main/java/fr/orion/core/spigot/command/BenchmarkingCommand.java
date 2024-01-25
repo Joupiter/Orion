@@ -29,8 +29,8 @@ public class BenchmarkingCommand implements CommandExecutor {
 
         getBenchHandler().getCategory(args[0])
                 .map(Optional::orElseThrow)
-                .subscribe(category -> category.getBenchmark(args[1]).map(Optional::orElseThrow).subscribe(category::run,
-                        throwable -> showAvailableBench(sender, category)), throwable -> showAvailableCategory(sender));
+                .subscribe(category -> category.getBenchmark(args[1]).map(Optional::orElseThrow)
+                        .subscribe(category::run, throwable -> showAvailableBench(sender, category)), throwable -> showAvailableCategory(sender));
 
         return true;
     }

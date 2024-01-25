@@ -1,10 +1,13 @@
 package fr.orion.api.economy.currency;
 
 import fr.orion.api.economy.Currency;
+import fr.orion.api.economy.Economy;
+import fr.orion.api.utils.json.serializer.GsonImplementation;
 
-public abstract class DoubleCurrency extends Currency<Double> {
+@GsonImplementation(of = Economy.class)
+public class DoubleCurrency extends Currency<Double> {
 
-    public DoubleCurrency(String name, char symbol, Double amount) {
+    public DoubleCurrency(String name, String symbol, Double amount) {
         super(name, symbol, amount);
     }
 

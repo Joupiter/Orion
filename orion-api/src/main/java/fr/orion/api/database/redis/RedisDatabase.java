@@ -2,7 +2,7 @@ package fr.orion.api.database.redis;
 
 import fr.orion.api.database.Database;
 import fr.orion.api.database.DatabaseCredentials;
-import fr.orion.api.utils.GsonUtils;
+import fr.orion.api.utils.json.GsonUtils;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;

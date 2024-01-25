@@ -22,7 +22,7 @@ public class InMemoryUserManager implements UserRepository {
 
     @Override
     public Mono<User> getUser(UUID id) {
-        return Mono.justOrEmpty(getCache().computeIfAbsent(id, k -> new OrionUser(id))).subscribeOn(Schedulers.boundedElastic());
+        return Mono.justOrEmpty(getCache().computeIfAbsent(id, k -> new Account(id))).subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override

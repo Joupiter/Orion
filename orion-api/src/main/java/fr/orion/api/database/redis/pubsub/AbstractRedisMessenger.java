@@ -3,7 +3,7 @@ package fr.orion.api.database.redis.pubsub;
 import fr.orion.api.OrionApi;
 import fr.orion.api.database.redis.RedisDatabase;
 import fr.orion.api.database.redis.RedisPacket;
-import fr.orion.api.utils.GsonUtils;
+import fr.orion.api.utils.json.GsonUtils;
 import fr.orion.api.utils.Utils;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.reactive.ChannelMessage;

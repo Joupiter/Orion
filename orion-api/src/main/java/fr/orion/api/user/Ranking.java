@@ -2,9 +2,9 @@ package fr.orion.api.user;
 
 import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
-import fr.orion.api.utils.math.Operator;
+import fr.orion.api.utils.json.serializer.ApiSerializable;
 
-public interface Ranking {
+public interface Ranking extends ApiSerializable {
 
     Division getDivision();
     DivisionTier getTier();
@@ -22,7 +22,7 @@ public interface Ranking {
                         */
 
     default double getCombinedMmr() {
-        return Operator.ADD.apply(getDivision().getBaseMmr(), getMmr());
+        return getDivision().getBaseMmr() + getMmr();
     }
 
     default Division getEstimatedDivision() {

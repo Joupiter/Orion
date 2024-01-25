@@ -22,7 +22,7 @@ public class LobbyPlugin extends JavaPlugin {
     }
 
     private RedisChannel<FinePacket> getFineChannel() {
-        return RedisChannel.newChannel("fine", FinePacket.class, packet -> System.out.println(packet.getUser().getUuid().toString() + ": " + packet.getUser().getCoins()));
+        return RedisChannel.newChannel("fine", FinePacket.class, packet -> System.out.println(packet.getUser().getUuid().toString() + ": " + packet.getUser().getCoins().getAmount()));
     }
 
     public OrionSpigotApi getApi() {

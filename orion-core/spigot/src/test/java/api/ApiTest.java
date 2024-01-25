@@ -6,7 +6,7 @@ import fr.orion.api.rank.Rank;
 import fr.orion.api.user.User;
 import fr.orion.api.utils.StopWatch;
 import fr.orion.core.common.rank.OrionRank;
-import fr.orion.core.common.user.OrionUser;
+import fr.orion.core.common.user.Account;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class ApiTest {
 
         OrionApi.setProvider(new OrionTestImpl());
         UUID uuid = UUID.randomUUID();
-        User user = new OrionUser(uuid);
+        User user = new Account(uuid);
 
         Rank defaultRank = new OrionRank("Joueur", "&7Joueur", 0, true, Collections.emptySet());
         Rank adminRank = new OrionRank("Admin", "&cAdmin", 99, true, Set.of("orion.*"));
@@ -36,7 +36,7 @@ public class ApiTest {
         logger.info("-------------------------");
 
         IntStream.rangeClosed(0, 9999)
-                .forEach(value -> OrionApi.getProvider().getUserRepository().saveUser(new OrionUser(UUID.randomUUID())));
+                .forEach(value -> OrionApi.getProvider().getUserRepository().saveUser(new Account(UUID.randomUUID())));
 
         OrionApi.getProvider().getUserRepository().saveUser(user);
         OrionApi.getProvider().getUserRepository().getUsers().map(User::toString).subscribe(logger::info);
@@ -59,7 +59,7 @@ public class ApiTest {
     }
 
     public void addCoins(User user) {
-        user.getCoins().add(1);
+        //user.getCoins().add(1);
         System.out.println(user);
     }
 

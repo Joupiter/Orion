@@ -1,10 +1,12 @@
 package fr.orion.api.economy;
 
-public interface Economy<N extends Number> {
+import fr.orion.api.utils.json.serializer.ApiSerializable;
+
+public interface Economy<N extends Number> extends ApiSerializable {
 
     String getName();
 
-    char getSymbol();
+    String getSymbol();
 
     N getAmount();
 
