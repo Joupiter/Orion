@@ -1,8 +1,9 @@
 dependencies {
-    compileOnly files('../libs/spigot.jar')
+    compileOnly 'net.titanvale:titanium-server:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'com.github.ben-manes.caffeine:caffeine:3.1.8'
     compileOnly 'io.lettuce:lettuce-core:6.3.0.RELEASE'
     compileOnly 'org.mongodb:mongodb-driver-reactivestreams:4.11.1'
     compileOnly 'io.github.classgraph:classgraph:4.8.165'
+
     testImplementation 'com.google.code.gson:gson:2.10.1'
 }
