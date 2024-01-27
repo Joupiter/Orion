@@ -1,8 +1,9 @@
 rootProject.name = 'Orion'
 
 include 'orion-api', 'orion-lobby'
-include 'orion-core:common', 'orion-core:spigot', 'orion-core:bungee'
+include 'orion-core:common', 'orion-core:spigot', 'orion-core:velocity'
 
 findProject(':orion-core:common')?.name = 'common'
 findProject(':orion-core:spigot')?.name = 'spigot'
-findProject(':orion-core:bungee')?.name = 'bungee'
+findProject(':orion-core:velocity')?.name = 'velocity'
+

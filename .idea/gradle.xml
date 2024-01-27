@@ -11,9 +11,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/orion-api" />
             <option value="$PROJECT_DIR$/orion-core" />
-            <option value="$PROJECT_DIR$/orion-core/bungee" />
             <option value="$PROJECT_DIR$/orion-core/common" />
             <option value="$PROJECT_DIR$/orion-core/spigot" />
+            <option value="$PROJECT_DIR$/orion-core/velocity" />
             <option value="$PROJECT_DIR$/orion-lobby" />
           </set>
         </option>
