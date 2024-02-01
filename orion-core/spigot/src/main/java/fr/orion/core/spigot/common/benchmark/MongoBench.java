@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class MongoBench extends BenchCategory {
@@ -50,7 +49,7 @@ public class MongoBench extends BenchCategory {
                     .doOnNext(document -> System.out.println("next" + document.get("id")))
                     .doOnComplete(bench::notifyEnd)
                     .toStream()
-                    .collect(Collectors.toList())
+                    .toList()
                     .forEach(document -> System.out.println(">> " + document.toJson()));
         });
     }

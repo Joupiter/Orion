@@ -3,7 +3,6 @@ package testing;
 import fr.orion.api.division.Division;
 import fr.orion.api.division.DivisionTier;
 import fr.orion.api.user.Ranking;
-import fr.orion.api.utils.math.Operator;
 
 public class UserRanking implements Ranking {
 

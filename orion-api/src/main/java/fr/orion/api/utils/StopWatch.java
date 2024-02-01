@@ -2,14 +2,12 @@ package fr.orion.api.utils;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class StopWatch {
-
-    static Logger logger = LoggerFactory.getLogger(StopWatch.class);
 
     private long startTime, endTime;
 
@@ -39,11 +37,11 @@ public class StopWatch {
     }
 
     public void log(String prefix) {
-        logger.info("{} end in {}", prefix, getTimeElapsedAsString());
+        log.info("{} end in {}", prefix, getTimeElapsedAsString());
     }
 
     public void log() {
-        logger.info("end in {}", getTimeElapsedAsString());
+        log.info("end in {}", getTimeElapsedAsString());
     }
 
     public String getTimeElapsedAsString() {

@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Getter
@@ -64,7 +63,7 @@ public class Probabilities<T> {
     public List<T> randomize(int number) {
         return IntStream.range(0, number)
                 .mapToObj(i -> randomize().orElseThrow())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Predicate<Map.Entry<T, Float>> predicate(float result, AtomicReference<Float> current) {

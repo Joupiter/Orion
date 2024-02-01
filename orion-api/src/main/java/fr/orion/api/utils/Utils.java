@@ -66,7 +66,7 @@ public class Utils {
 
     @SafeVarargs
     public static <T> List<T> mergeList(List<T>... lists) {
-        return Arrays.stream(lists).flatMap(Collection::stream).collect(Collectors.toList());
+        return Arrays.stream(lists).flatMap(Collection::stream).toList();
     }
 
     public Map<Integer, String> stringListToMap(List<String> messages) {

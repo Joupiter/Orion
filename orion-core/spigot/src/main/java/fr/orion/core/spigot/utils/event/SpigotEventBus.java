@@ -24,7 +24,7 @@ public class SpigotEventBus implements EventBus, Listener {
 
     @Override
     public <T extends Event> void publish(Class<T> eventClass, EventSettings settings, Consumer<T> consumer) {
-        getPlugin().getServer().getPluginManager().registerEvent(eventClass, this, settings.getPriority(), getEventExecutor(eventClass, consumer), getPlugin(), settings.isIgnoreCancelled());
+        getPlugin().getServer().getPluginManager().registerEvent(eventClass, this, settings.priority(), getEventExecutor(eventClass, consumer), getPlugin(), settings.ignoreCancelled());
     }
 
     @Override

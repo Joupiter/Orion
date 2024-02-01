@@ -3,16 +3,14 @@ package fr.orion.api.benchmark;
 import fr.orion.api.utils.StopWatch;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
 
 @Getter
 @Setter
+@Slf4j
 public abstract class Bench {
-
-    static Logger logger = LoggerFactory.getLogger(Bench.class);
 
     private final String name;
     private final StopWatch stopWatch;
@@ -38,7 +36,7 @@ public abstract class Bench {
     }
 
     public void notify(String message) {
-        logger.info("[Benchmark] ({}) : {}", getName(), message);
+        log.info("[Benchmark] ({}) : {}", getName(), message);
     }
 
     public void notifyEnd() {

@@ -3,8 +3,8 @@ package fr.orion.api.database.redis.pubsub;
 import fr.orion.api.OrionApi;
 import fr.orion.api.database.redis.RedisDatabase;
 import fr.orion.api.database.redis.RedisPacket;
-import fr.orion.api.utils.json.GsonUtils;
 import fr.orion.api.utils.Utils;
+import fr.orion.api.utils.json.GsonUtils;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.reactive.ChannelMessage;
 import io.lettuce.core.pubsub.api.reactive.RedisPubSubReactiveCommands;
@@ -13,7 +13,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Getter
 public abstract class AbstractRedisMessenger {
@@ -74,7 +73,7 @@ public abstract class AbstractRedisMessenger {
     }
 
     private List<String> getChannelNamesList() {
-        return getChannels().stream().map(RedisChannel::getName).collect(Collectors.toList());
+        return getChannels().stream().map(RedisChannel::getName).toList();
     }
 
     private String[] getChannelNames() {

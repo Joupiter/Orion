@@ -9,17 +9,15 @@ import fr.orion.api.utils.json.serializer.ApiImplSerializer;
 import fr.orion.api.utils.json.serializer.ApiSerializable;
 import fr.orion.api.utils.json.serializer.GsonImplementation;
 import lombok.experimental.UtilityClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @UtilityClass
 public class GsonUtils {
-
-    static Logger logger = LoggerFactory.getLogger(GsonUtils.class);
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting()
             .registerTypeAdapter(ApiSerializable.class, new ApiImplSerializer<>())
@@ -39,7 +37,7 @@ public class GsonUtils {
     }
 
     public void addRegistry(Class<?> clazz) {
-        logger.info("Class registered: {}", clazz.getSimpleName());
+        log.info("Class registered: {}", clazz.getSimpleName());
         getRegistries().put(clazz.getAnnotation(GsonImplementation.class).of(), clazz);
     }
 

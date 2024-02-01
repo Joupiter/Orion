@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Getter
 public abstract class RequestManager<T extends Request> {
@@ -87,7 +86,7 @@ public abstract class RequestManager<T extends Request> {
     public List<T> getRequests(Predicate<T> predicate) {
         return getRequests().values().stream()
                 .filter(predicate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<T> getIncomingRequests(UUID uuid) {

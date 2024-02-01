@@ -10,11 +10,11 @@ public class MultiThreading {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
-    public final ExecutorService pool = Executors.newFixedThreadPool(10, runnable -> new Thread(runnable, String.format("orion-fixed-thread-%s", counter.incrementAndGet())));
-    public final ExecutorService cachedPool = Executors.newCachedThreadPool(runnable ->  new Thread(runnable, String.format("orion-cached-thread-%s", counter.incrementAndGet())));
+    public final ExecutorService pool = Executors.newFixedThreadPool(10, new ThreadBuilder(counter).builder().setNameFormat("orion-fixed-thread-%d").build());
+    public final ExecutorService cachedPool = Executors.newCachedThreadPool(new ThreadBuilder(counter).builder().setNameFormat("orion-cached-thread-%d").build());
 
-    public final ScheduledExecutorService single = Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, String.format("orion-single-thread-%s", counter.incrementAndGet())));
-    public final ScheduledExecutorService runnablePool = Executors.newScheduledThreadPool(10, runnable -> new Thread(runnable, String.format("orion-scheduled-thread-%s", counter.incrementAndGet())));
+    public final ScheduledExecutorService single = Executors.newSingleThreadScheduledExecutor(new ThreadBuilder(counter).builder().setNameFormat("orion-single-thread-%d").build());
+    public final ScheduledExecutorService runnablePool = Executors.newScheduledThreadPool(10, new ThreadBuilder(counter).builder().setNameFormat("orion-scheduled-thread-%s").build());
 
     public ScheduledFuture<?> schedule(Runnable runnable, long initialDelay, long delay, TimeUnit unit) {
         return scheduledFuture(runnablePool, runnable, initialDelay, delay, unit);

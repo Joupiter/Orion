@@ -7,8 +7,8 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import fr.orion.api.OrionApi;
-import fr.orion.core.velocity.utils.VelocityAddon;
 import fr.orion.core.velocity.common.OrionVelocityImpl;
+import fr.orion.core.velocity.utils.VelocityAddon;
 import lombok.Getter;
 import org.slf4j.Logger;
 
