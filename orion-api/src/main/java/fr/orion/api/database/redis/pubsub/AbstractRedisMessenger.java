@@ -30,7 +30,7 @@ public abstract class AbstractRedisMessenger {
 
     public void connect() {
         Utils.ifFalse(getChannelNamesList().isEmpty(), () -> getReactivePubSub().subscribe(getChannelNames()).subscribe());
-        getReactivePubSub().observeChannels().doOnNext(this::onReceive).subscribeOn(Schedulers.boundedElastic()).subscribe();
+        getReactivePubSub().observeChannels().doOnNext(this::onReceive).subscribe();
     }
 
     public void disconnect() {
@@ -61,7 +61,9 @@ public abstract class AbstractRedisMessenger {
     }
 
     public void publish(String channel, RedisPacket packet) {
-        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getReactiveCommands().publish(channel, toJson(packet)).subscribeOn(Schedulers.boundedElastic()).subscribe();
+        OrionApi.getProvider().getDatabaseLoader().getRedisDatabase().getReactiveCommands()
+                .publish(channel, toJson(packet))
+                .subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
 
     private <T extends RedisPacket> T fromJson(ChannelMessage<String, String> channelMessage, Type type) {

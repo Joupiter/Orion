@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(':orion-api')
+    implementation project(':orion-core:common')
+    implementation project(':orion-core:spigot')
+
+    compileOnly 'net.titanvale:titanium-server:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'io.lettuce:lettuce-core:6.3.0.RELEASE'
+    compileOnly 'org.mongodb:mongodb-driver-reactivestreams:4.11.1'
+}
+
+jar {
+    archivesBaseName = "Orion-GameEngine"
+}

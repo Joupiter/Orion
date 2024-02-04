@@ -59,8 +59,7 @@ public class ApiTest {
     }
 
     public void addCoins(User user) {
-        //user.getCoins().add(1);
-        System.out.println(user);
+        user.getCoins().add(1);
     }
 
 }

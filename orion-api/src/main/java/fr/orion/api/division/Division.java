@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -39,7 +38,7 @@ public enum Division {
     public static List<Division> getDivisionsSorted() {
         return getDivisions().stream()
                 .sorted(Comparator.comparingDouble(Division::getBaseMmr))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static Division estimateDivision(double mmr) {
