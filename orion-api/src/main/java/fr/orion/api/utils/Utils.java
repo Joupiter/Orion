@@ -4,8 +4,11 @@ import io.github.classgraph.ClassInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -17,6 +20,20 @@ public class Utils {
     public <T> void ifPresentOrElse(Optional<T> optional, Consumer<T> consumer, Runnable runnable) {
         if (optional.isPresent()) consumer.accept(optional.get());
         else runnable.run();
+    }
+
+    public <T> void ifPresentOrElse(Mono<T> mono, Consumer<T> consumer, Runnable runnable) {
+        mono.switchIfEmpty(Mono.defer(() -> {
+            runnable.run();
+            return Mono.empty();
+        })).subscribe(consumer);
+    }
+
+    public <T> void ifPresentOrElse(Flux<T> flux, Consumer<T> consumer, Runnable runnable) {
+        flux.switchIfEmpty(Flux.defer(() -> {
+            runnable.run();
+            return Flux.empty();
+        })).subscribe(consumer);
     }
 
     public <T> void ifEmpty(Optional<T> optional, Runnable runnable) {
@@ -62,6 +79,16 @@ public class Utils {
 
     public void ifFalse(boolean condition, Runnable runnable) {
         if (!condition) runnable.run();
+    }
+
+    public String randomString(int length) {
+        return ThreadLocalRandom.current()
+                .ints(48, 123)
+                .filter(num -> (num < 58 || num > 64) && (num < 91 || num > 96))
+                .limit(length)
+                .mapToObj(Character::toString)
+                .collect(StringBuffer::new, StringBuffer::append, StringBuffer::append)
+                .toString();
     }
 
     @SafeVarargs

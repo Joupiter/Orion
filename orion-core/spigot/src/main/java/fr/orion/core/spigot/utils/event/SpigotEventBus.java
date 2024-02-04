@@ -1,8 +1,6 @@
 package fr.orion.core.spigot.utils.event;
 
 import fr.orion.api.utils.Utils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -11,11 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.function.Consumer;
 
-@Getter
-@AllArgsConstructor
-public class SpigotEventBus implements EventBus, Listener {
-
-    private final JavaPlugin plugin;
+public record SpigotEventBus(JavaPlugin plugin) implements EventBus, Listener {
 
     @Override
     public <T extends Event> void publish(Class<T> eventClass, Consumer<T> consumer) {
@@ -24,7 +18,7 @@ public class SpigotEventBus implements EventBus, Listener {
 
     @Override
     public <T extends Event> void publish(Class<T> eventClass, EventSettings settings, Consumer<T> consumer) {
-        getPlugin().getServer().getPluginManager().registerEvent(eventClass, this, settings.priority(), getEventExecutor(eventClass, consumer), getPlugin(), settings.ignoreCancelled());
+        plugin().getServer().getPluginManager().registerEvent(eventClass, this, settings.priority(), getEventExecutor(eventClass, consumer), plugin(), settings.ignoreCancelled());
     }
 
     @Override
