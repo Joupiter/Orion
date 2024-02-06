@@ -1,4 +1,4 @@
-Need to make an abstract class like [Game](orion-games/engine/src/main/java) for ffa game
+Need to make an abstract class like [Game](src/main/java) for ffa game
 
 Without team and phase system
 
