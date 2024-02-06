@@ -1,18 +1,2 @@
-Need to make an abstract class like [Game](src/main/java) for ffa game
-
-Without team and phase system
-
-```java
-public abstract class FFAGame<G extends GamePlayer, S extends GameSettings> {
-
-    private final String name, id;
-    private final S settings;
-    
-    private final ConcurrentMap<UUID, G> players;
-    
-    public FFAGame(String name, S settings) {
-        
-    }
-    
-}
-```
+Complex Game with team and phase system [Game](src/main/java/fr/orion/game/engine/Game.java)
+Simple Game (like ffa) [SimpleGame](src/main/java/fr/orion/game/engine/SimpleGame.java)
