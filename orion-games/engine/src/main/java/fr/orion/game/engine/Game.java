@@ -1,7 +1,6 @@
 package fr.orion.game.engine;
 
 import fr.orion.api.utils.Utils;
-import fr.orion.core.spigot.utils.SpigotUtils;
 import fr.orion.game.engine.event.GamePlayerJoinEvent;
 import fr.orion.game.engine.event.GamePlayerLeaveEvent;
 import fr.orion.game.engine.phase.GamePhaseManager;
@@ -9,69 +8,42 @@ import fr.orion.game.engine.team.GameTeam;
 import fr.orion.game.engine.team.GameTeamColor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@Slf4j
-public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends GameSettings> {
-
-    private final String name, id;
-    private final S settings;
+public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends GameSettings> extends SimpleGame<G, S> {
 
     private final GamePhaseManager<?> phaseManager;
-
     private final List<T> teams;
-    private final ConcurrentMap<UUID, G> players;
 
     private GameState state;
 
     public Game(String name, S settings) {
-        this.name = name;
-        this.id = Utils.randomString(10);
-        this.settings = settings;
-        this.phaseManager = new GamePhaseManager<>(this){};
+        super(name, settings);
+        this.phaseManager = new GamePhaseManager<>(this);
         this.teams = new ArrayList<>();
-        this.players = new ConcurrentHashMap<>();
-        this.state = GameState.WAIT;
         this.load();
     }
-
-    public abstract G defaultGamePlayer(UUID uuid, boolean spectator);
 
     public abstract T defaultGameTeam(GameTeamColor teamColor);
 
     private void load() {
         getTeams().addAll(Arrays.stream(GameTeamColor.values()).limit(getSettings().getGameSize().getTeamNeeded()).map(this::defaultGameTeam).toList());
-        //Bukkit.getPluginManager().registerEvents(this, getPlugin());
-        debug("{} loaded", getFullName());
     }
 
+    @Override
     public void unload() {
+        super.unload();
         getPhaseManager().unregisterPhases();
-        //getListeners().forEach(HandlerList::unregisterAll);
-        //HandlerList.unregisterAll(this);
-        debug("{} unloaded", getFullName());
-    }
-
-    public List<G> getAlivePlayers() {
-        return getPlayers().values().stream().filter(isSpectatorPredicate().negate()).collect(Collectors.toList());
-    }
-
-    public List<G> getSpectators() {
-        return getPlayers().values().stream().filter(GamePlayer::isSpectator).collect(Collectors.toList());
     }
 
     public List<G> getPlayersWithTeam() {
@@ -123,37 +95,6 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
         getPlayersWithoutTeam().forEach(gamePlayer -> getTeamWithLeastPlayers().subscribe(gameTeam -> gameTeam.addMember(gamePlayer)));
     }
 
-    public Optional<G> getPlayer(UUID uuid) {
-        return Optional.ofNullable(getPlayers().get(uuid));
-    }
-
-    public void checkSetting(boolean setting, Runnable runnable) {
-        checkSetting(setting, runnable, () -> {});
-    }
-
-    public void checkSetting(boolean setting, Runnable trueRunnable, Runnable falseRunnable) {
-        Utils.BooleanWrapper.of(setting)
-                .ifTrue(trueRunnable)
-                .ifFalse(falseRunnable);
-    }
-
-    public void checkGameState(GameState gameState, Runnable runnable) {
-        if (getState().equals(gameState))
-            runnable.run();
-    }
-
-    public void ifContainsPlayer(UUID uuid, Consumer<Player> consumer) {
-        ifContainsPlayer(Bukkit.getPlayer(uuid), consumer);
-    }
-
-    public void ifContainsPlayer(Player player, Consumer<Player> consumer) {
-        Optional.of(player).filter(this::containsPlayer).ifPresent(consumer);
-    }
-
-    public void ifContainsPlayer(Player player, Runnable runnable) {
-        Utils.ifTrue(containsPlayer(player), runnable);
-    }
-
     public void joinGame(Player player) {
         joinGame(player, false);
     }
@@ -183,47 +124,6 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
         debug("END OF GAME : {}", getFullName());
     }
 
-    public void broadcast(String message) {
-        getPlayers().values().forEach(gamePlayer -> gamePlayer.sendMessage(message));
-    }
-
-    public void broadcast(String message, Object... arguments) {
-        broadcast(String.format(message, arguments));
-    }
-
-    public void broadcast(String... messages) {
-        Arrays.asList(messages)
-                .forEach(this::broadcast);
-    }
-
-    public void broadcast(Predicate<G> filter, String... messages) {
-        getPlayers().values().stream()
-                .filter(filter)
-                .forEach(gamePlayer -> gamePlayer.sendMessage(messages));
-    }
-
-    public void broadcast(Predicate<G> filter, String message, Object... arguments) {
-        getPlayers().values().stream()
-                .filter(filter)
-                .forEach(gamePlayer -> gamePlayer.sendMessage(String.format(message, arguments)));
-    }
-
-    public void debug(String message, Object ... arguments) {
-        log.debug(message, arguments);
-    }
-
-    public String getFullName() {
-        return getName() + "-" + getSettings().getGameSize().getName() + "-" + getId();
-    }
-
-    private Predicate<GameTeam> isNoPlayersAlivePredicate() {
-        return gameTeam -> gameTeam.getAlivePlayers().isEmpty();
-    }
-
-    private Predicate<GamePlayer> isSpectatorPredicate() {
-        return GamePlayer::isSpectator;
-    }
-
     private Predicate<GamePlayer> haveTeamPredicate() {
         return gamePlayer -> getTeam(gamePlayer).hasElement().blockOptional().orElse(false);
     }
@@ -232,52 +132,16 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
         return getTeam(gamePlayer).hasElement().blockOptional().orElse(false);
     }
 
-    public boolean containsPlayer(UUID uuid) {
-        return getPlayers().containsKey(uuid);
-    }
-
-    public boolean containsPlayer(Player player) {
-        return getPlayers().containsKey(player.getUniqueId());
-    }
-
     public boolean oneTeamAlive() {
         return getAliveTeamsCount() == 1;
-    }
-
-    public boolean canStart() {
-        return getAlivePlayersCount() >= getSettings().getGameSize().getMinPlayer();
-    }
-
-    public boolean isFull() {
-        return getAlivePlayersCount() == getSettings().getGameSize().getMaxPlayer();
-    }
-
-    public boolean canJoin() {
-        return getAlivePlayersCount() < getSettings().getGameSize().getMaxPlayer();
     }
 
     public int getAliveTeamsCount() {
         return getAliveTeams().size();
     }
 
-    public int getAlivePlayersCount() {
-        return getAlivePlayers().size();
-    }
-
-    public int getSpectatorsCount() {
-        return getSpectators().size();
-    }
-
     public int getTeamsCount() {
         return getTeams().size();
-    }
-
-    public int getSize() {
-        return getPlayers().size();
-    }
-
-    public String coloredMessage(String message) {
-        return SpigotUtils.colorize(message);
     }
 
     public void sendDebugInfoMessage(Player player) {

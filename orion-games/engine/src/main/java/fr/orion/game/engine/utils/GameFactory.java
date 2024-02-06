@@ -6,6 +6,7 @@ import fr.orion.game.engine.GameSize;
 import fr.orion.game.engine.team.GameTeam;
 import fr.orion.game.engine.team.GameTeamColor;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import java.util.UUID;
@@ -23,6 +24,14 @@ public class GameFactory {
 
     public GameSettings newDefaultGameSettings(GameSize gameSize, World world) {
         return new GameSettings(gameSize, world) {};
+    }
+
+    public GameSettings newDefaultGameSettings(GameSizeTemplate template, World world) {
+        return new GameSettings(template.getGameSize().clone(), world) {};
+    }
+
+    public GameSettings newDefaultGameSettings(GameSizeTemplate template, String worldName) {
+        return new GameSettings(template.getGameSize().clone(), Bukkit.getWorld(worldName)) {};
     }
 
 }
