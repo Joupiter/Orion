@@ -27,11 +27,11 @@ public class GameFactory {
     }
 
     public GameSettings newDefaultGameSettings(GameSizeTemplate template, World world) {
-        return new GameSettings(template.getGameSize().clone(), world) {};
+        return new GameSettings(template, world) {};
     }
 
     public GameSettings newDefaultGameSettings(GameSizeTemplate template, String worldName) {
-        return new GameSettings(template.getGameSize().clone(), Bukkit.getWorld(worldName)) {};
+        return new GameSettings(template, Bukkit.getWorld(worldName)) {};
     }
 
 }

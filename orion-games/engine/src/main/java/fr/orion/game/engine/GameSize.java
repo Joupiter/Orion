@@ -1,5 +1,6 @@
 package fr.orion.game.engine;
 
+import fr.orion.game.engine.utils.GameSizeTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,18 +8,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GameSize implements Cloneable {
+public class GameSize {
 
     private String name;
     private int minPlayer, maxPlayer, teamNeeded, teamMaxPlayer;
 
-    @Override
-    public GameSize clone() {
-        try {
-            return (GameSize) super.clone();
-        } catch (CloneNotSupportedException exception) {
-            throw new AssertionError();
-        }
+    public GameSize(GameSizeTemplate template) {
+        this.name = template.getName();
+        this.minPlayer = template.getMinPlayer();
+        this.maxPlayer = template.getMaxPlayer();
+        this.teamNeeded = template.getTeamNeeded();
+        this.teamMaxPlayer = template.getTeamMaxPlayer();
     }
 
 }

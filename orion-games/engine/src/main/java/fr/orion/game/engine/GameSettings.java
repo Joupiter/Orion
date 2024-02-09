@@ -1,5 +1,6 @@
 package fr.orion.game.engine;
 
+import fr.orion.game.engine.utils.GameSizeTemplate;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -27,6 +28,10 @@ public abstract class GameSettings {
         this.gameSize = gameSize;
         this.world = world;
         this.locations = new ConcurrentHashMap<>();
+    }
+
+    public GameSettings(GameSizeTemplate template, World world) {
+        this(new GameSize(template), world);
     }
 
     public void addLocation(String name, Location location) {
