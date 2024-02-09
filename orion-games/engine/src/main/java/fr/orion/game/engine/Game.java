@@ -36,14 +36,16 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
 
     public abstract T defaultGameTeam(GameTeamColor teamColor);
 
-    private void load() {
+    @Override
+    public void load() {
         getTeams().addAll(Arrays.stream(GameTeamColor.values()).limit(getSettings().getGameSize().getTeamNeeded()).map(this::defaultGameTeam).toList());
+        debug("{} loaded", getFullName());
     }
 
     @Override
     public void unload() {
-        super.unload();
         getPhaseManager().unregisterPhases();
+        debug("{} unloaded", getFullName());
     }
 
     public List<G> getPlayersWithTeam() {
@@ -95,10 +97,7 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
         getPlayersWithoutTeam().forEach(gamePlayer -> getTeamWithLeastPlayers().subscribe(gameTeam -> gameTeam.addMember(gamePlayer)));
     }
 
-    public void joinGame(Player player) {
-        joinGame(player, false);
-    }
-
+    @Override
     public void joinGame(Player player, boolean spectator) {
         Utils.ifFalse(getPlayers().containsKey(player.getUniqueId()), () -> {
             G gamePlayer = defaultGamePlayer(player.getUniqueId(), spectator);
@@ -108,20 +107,14 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
         });
     }
 
+    @Override
     public void leaveGame(UUID uuid) {
-        getPlayer(uuid).ifPresent(gamePlayer -> {
+        getPlayer(uuid).subscribe(gamePlayer -> {
             Bukkit.getServer().getPluginManager().callEvent(new GamePlayerLeaveEvent<>(this, gamePlayer));
             getPlayers().remove(uuid);
             removePlayerToTeam(gamePlayer);
             debug("{} leave {}", gamePlayer.getPlayer().getName(), getFullName());
         });
-    }
-
-    public void endGame() {
-        getPlayers().values().stream().map(GamePlayer::getUuid).forEach(this::leaveGame);
-        unload();
-        //gameManager.removeGame(this);
-        debug("END OF GAME : {}", getFullName());
     }
 
     private Predicate<GamePlayer> haveTeamPredicate() {
@@ -144,6 +137,7 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
         return getTeams().size();
     }
 
+    @Override
     public void sendDebugInfoMessage(Player player) {
         player.sendMessage("-----------------------------");
         player.sendMessage("Game: " + getFullName());

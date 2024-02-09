@@ -7,14 +7,13 @@ import fr.orion.game.engine.event.GamePlayerLeaveEvent;
 import fr.orion.game.engine.team.GameTeam;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -24,8 +23,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@Slf4j
-public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
+public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> implements MiniGame {
 
     private final String name, id;
     private final S settings;
@@ -45,14 +43,13 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
 
     public abstract G defaultGamePlayer(UUID uuid, boolean spectator);
 
-    private void load() {
-        //Bukkit.getPluginManager().registerEvents(this, getPlugin());
+    @Override
+    public void load() {
         debug("{} loaded", getFullName());
     }
 
+    @Override
     public void unload() {
-        //getListeners().forEach(HandlerList::unregisterAll);
-        //HandlerList.unregisterAll(this);
         debug("{} unloaded", getFullName());
     }
 
@@ -64,8 +61,8 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
         return getPlayers().values().stream().filter(GamePlayer::isSpectator).collect(Collectors.toList());
     }
 
-    public Optional<G> getPlayer(UUID uuid) {
-        return Optional.ofNullable(getPlayers().get(uuid));
+    public Mono<G> getPlayer(UUID uuid) {
+        return Mono.justOrEmpty(getPlayers().get(uuid));
     }
 
     public void checkSetting(boolean setting, Runnable runnable) {
@@ -87,7 +84,7 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
     }
 
     public void ifContainsPlayer(Player player, Consumer<Player> consumer) {
-        Optional.of(player).filter(this::containsPlayer).ifPresent(consumer);
+        Mono.just(player).filter(this::containsPlayer).subscribe(consumer);
     }
 
     public void ifContainsPlayer(Player player, Runnable runnable) {
@@ -98,6 +95,7 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
         joinGame(player, false);
     }
 
+    @Override
     public void joinGame(Player player, boolean spectator) {
         Utils.ifFalse(getPlayers().containsKey(player.getUniqueId()), () -> {
             G gamePlayer = defaultGamePlayer(player.getUniqueId(), spectator);
@@ -107,14 +105,16 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
         });
     }
 
+    @Override
     public void leaveGame(UUID uuid) {
-        getPlayer(uuid).ifPresent(gamePlayer -> {
+        getPlayer(uuid).subscribe(gamePlayer -> {
             Bukkit.getServer().getPluginManager().callEvent(new GamePlayerLeaveEvent<>(this, gamePlayer));
             getPlayers().remove(uuid);
             debug("{} leave {}", gamePlayer.getPlayer().getName(), getFullName());
         });
     }
 
+    @Override
     public void endGame() {
         getPlayers().values().stream().map(GamePlayer::getUuid).forEach(this::leaveGame);
         unload();
@@ -145,10 +145,6 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
         getPlayers().values().stream()
                 .filter(filter)
                 .forEach(gamePlayer -> gamePlayer.sendMessage(String.format(message, arguments)));
-    }
-
-    public void debug(String message, Object ... arguments) {
-        log.debug(message, arguments);
     }
 
     public String getFullName() {
@@ -199,6 +195,7 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> {
         return SpigotUtils.colorize(message);
     }
 
+    @Override
     public void sendDebugInfoMessage(Player player) {
         player.sendMessage("-----------------------------");
         player.sendMessage("Game: " + getFullName());

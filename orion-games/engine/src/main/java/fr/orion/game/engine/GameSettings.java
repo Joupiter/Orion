@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,16 +38,16 @@ public abstract class GameSettings {
                 .forEach(location -> addLocation(name, location));
     }
 
-    public Optional<Location> getLocation(String name) {
-        return Optional.ofNullable(getLocations(name).get(0));
+    public Mono<Location> getLocation(String name) {
+        return Mono.justOrEmpty(getLocations(name).get(0));
     }
 
     public void getLocation(String name, Consumer<Location> consumer) {
-        getLocation(name).ifPresent(consumer);
+        getLocation(name).subscribe(consumer);
     }
 
-    public Optional<Location> getRandomLocation(String name) {
-        return getLocations(name).stream().skip(getLocations(name).isEmpty() ? 0 : ThreadLocalRandom.current().nextInt(getLocations(name).size())).findFirst();
+    public Mono<Location> getRandomLocation(String name) {
+        return Mono.justOrEmpty(getLocations(name).stream().skip(getLocations(name).isEmpty() ? 0 : ThreadLocalRandom.current().nextInt(getLocations(name).size())).findFirst());
     }
 
     public List<Location> getLocations(String name) {
