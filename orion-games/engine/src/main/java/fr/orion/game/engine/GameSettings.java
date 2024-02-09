@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -34,8 +34,7 @@ public abstract class GameSettings {
     }
 
     public void addLocations(String name, Location... locations) {
-        Arrays.asList(locations)
-                .forEach(location -> addLocation(name, location));
+        Flux.just(locations).subscribe(location -> addLocation(name, location));
     }
 
     public Mono<Location> getLocation(String name) {

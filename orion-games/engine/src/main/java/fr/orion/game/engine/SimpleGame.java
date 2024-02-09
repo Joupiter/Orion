@@ -10,9 +10,9 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -91,10 +91,6 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> i
         Utils.ifTrue(containsPlayer(player), runnable);
     }
 
-    public void joinGame(Player player) {
-        joinGame(player, false);
-    }
-
     @Override
     public void joinGame(Player player, boolean spectator) {
         Utils.ifFalse(getPlayers().containsKey(player.getUniqueId()), () -> {
@@ -131,8 +127,7 @@ public abstract class SimpleGame<G extends GamePlayer, S extends GameSettings> i
     }
 
     public void broadcast(String... messages) {
-        Arrays.asList(messages)
-                .forEach(this::broadcast);
+        Flux.just(messages).subscribe(this::broadcast);
     }
 
     public void broadcast(Predicate<G> filter, String... messages) {

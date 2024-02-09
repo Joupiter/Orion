@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import reactor.core.publisher.Flux;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 @Getter
@@ -23,8 +23,7 @@ public abstract class GamePlayer {
     }
 
     public void sendMessage(String... messages) {
-        Arrays.asList(messages)
-                .forEach(this::sendMessage);
+        Flux.just(messages).subscribe(this::sendMessage);
     }
 
     public Player getPlayer() {

@@ -38,7 +38,7 @@ public abstract class Game<G extends GamePlayer, T extends GameTeam, S extends G
 
     @Override
     public void load() {
-        getTeams().addAll(Arrays.stream(GameTeamColor.values()).limit(getSettings().getGameSize().getTeamNeeded()).map(this::defaultGameTeam).toList());
+        GameTeamColor.getColors(getSettings().getGameSize().getTeamNeeded()).map(this::defaultGameTeam).collectList().subscribe(getTeams()::addAll);
         debug("{} loaded", getFullName());
     }
 
